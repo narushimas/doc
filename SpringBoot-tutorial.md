@@ -76,7 +76,7 @@ lombocやmavenの事前インストールなどは不要
                 .isEqualTo("hello");
         ```
 
-    * DTOのテストには、extracting()が便利
+    * DTOのテストには、extracting(Function<T、R>)が便利
 
         extractingで、要素を抽出して試験できる
 
@@ -91,4 +91,5 @@ lombocやmavenの事前インストールなどは不要
                 )  
         ```
 
-        > このメソッド参照難しい。i -> i.getId(); として、iでDTOインスタンスを渡している。
+        > このメソッド参照難しい。ラムダ式で書くなら、i -> i.getId();。
+        ectractingの内部で、DTOインスタンスを渡して実行するようにして使われている。
