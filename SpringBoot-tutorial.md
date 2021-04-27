@@ -83,11 +83,12 @@ lombocやmavenの事前インストールなどは不要
         ```java
             List<DTO> ls = findAll(); //DBから全行取得するメソッドのテスト
             assertThat(ls)
-                .extracting(DTO::id, DTO::name, DTO::age) //idと、nameと、ageだけ試験する
+                .extracting(DTO::getId, DTO::getName, DTO::getAge) //idと、nameと、ageだけ試験する
                 .contains(
                     tuple(1, "TARO", 56),
                     tuple(2, "HANAKO", 47),
                     tuple(3, "TOSHIO", 68)
-                )
-            
+                )  
         ```
+
+        > このメソッド参照難しい。i -> i.getId(); として、iでDTOインスタンスを渡している。
