@@ -93,3 +93,6 @@ lombocやmavenの事前インストールなどは不要
 
         > このメソッド参照難しい。ラムダ式で書くなら、i -> i.getId();。
         ectractingの内部で、DTOインスタンスを渡して実行するようにして使われている。apply(DTO dto);
+
+    * List<DTO>の試験なら、tupleを使うけど、DTO単体の時はtupleを使わない
+        tuple使うと、()がつく。単体の結果は()つかないので、containsで失敗になる。
