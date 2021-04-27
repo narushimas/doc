@@ -1,0 +1,67 @@
+# チュートリアルでハマった点などのメモ
+
+## 3. 環境構築
+
+1. プロジェクトの作成
+    * SpringInitializerを利用する
+      * Type: maven
+      * Packaging; jar (webアプリと思って、warにする必要はない)
+
+    * dependencies
+
+    以下にチェックをつける
+      * Spring Web
+      * Lombok
+      * H2 Database
+      * MyBatis Framework
+
+## 4. REST APIの作成
+
+1. pomの設定
+    * dozermapperが使えない(mavenの不具合？セントラルにはあるっぽい)
+
+    ```xml
+        <dependency>
+            <groupId>com.github.dozermapper</groupId>
+            <artifactId>dozer-spring-boot-starter</artifactId>
+        </dependency>
+    ```
+
+1. TodoResourceクラスの作成
+    * javax.validationは、pomにて追加が必要
+    (最近spring-boot-starter-webからvalidationが外されたため)
+
+    ```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+    ```
+
+    * @JsonFormatが uuuuになってるけど、yyyyの誤植かな？ -> yyyyで実施した
+
+1. Repositoryの作成
+    * @Selectなどを使うことで、Repository.xmlを書かない
+    * @Optionって何
+    @Insertと一緒に使って、主キーを動的に生成する等
+
+    ```java
+        @Options(useGeneratedKeys = true, keyProperty = "id")
+        @Insert("INSERT INTO users (name) VALUES(#{name})")
+        boolean insert(User user);
+    ```
+
+1. Repositoryの単体テスト
+    * @MyBatisTestは、pomに追加が必要
+    varsion指定が必要な時と、不要な時の違いって何。。？
+
+    ```xml
+        <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter-test</artifactId>
+        <version>2.1.3</version>
+        <scope>test</scope>
+        </dependency>
+    ```
+
+    * (誤植) DATE_TIME_FORMATTじゃなくて、DATE_TIME_FORMATTER
