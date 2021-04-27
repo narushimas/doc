@@ -2,6 +2,9 @@
 
 ## 3. 環境構築
 
+lombocやmavenの事前インストールなどは不要
+プロジェクトを作成し、必要なチェックをすれば、InteliJがやってくれる
+
 1. プロジェクトの作成
     * SpringInitializerを利用する
       * Type: maven
@@ -53,7 +56,7 @@
 
 1. Repositoryの単体テスト
     * @MyBatisTestは、pomに追加が必要
-    varsion指定が必要な時と、不要な時の違いって何。。？
+    version指定が必要な時と、不要な時の違いって何。。？
 
     ```xml
         <dependency>
@@ -65,3 +68,26 @@
     ```
 
     * (誤植) DATE_TIME_FORMATTじゃなくて、DATE_TIME_FORMATTER
+
+    * AssertJはメソッドチェーンで書ける
+
+        ```java
+            assertThat(検証対象)
+                .isEqualTo("hello");
+        ```
+
+    * DTOのテストには、extracting()が便利
+
+        extractingで、要素を抽出して試験できる
+
+        ```java
+            List<DTO> ls = findAll(); //DBから全行取得するメソッドのテスト
+            assertThat(ls)
+                .extracting(DTO::id, DTO::name, DTO::age) //idと、nameと、ageだけ試験する
+                .contains(
+                    tuple(1, "TARO", 56),
+                    tuple(2, "HANAKO", 47),
+                    tuple(3, "TOSHIO", 68)
+                )
+            
+        ```
