@@ -141,3 +141,14 @@ lombocやmavenの事前インストールなどは不要
 
 1. Controllerの単体テスト
     ResponseEntityと、getForEntityを理解する必要がある。
+
+## アプリケーションの実行
+
+1. 実行可能jarファイルの作成
+    mavenタブから、mvn package
+
+1. 実行可能jarファイルの実行
+    jarを右クリックして実行
+
+1. REST API Clientによる動作確認
+    REST APIの実行は、Chrome拡張の、Talend API Tester(旧名 DHC)
