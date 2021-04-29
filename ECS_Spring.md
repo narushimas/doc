@@ -6,8 +6,10 @@
 
 https://news.mynavi.jp/itsearch/article/devsoft/4354
 
-* availability zone:
+* availability zone :
   AWSのデータセンタ。 availability zoneを越えてデータを保存することで可用性を高められる。
 
 * VPC :
   virtual private cloud。
+  VPCの中に複数のサブネットを作って構築する。
+  VPCのなかに、複数のavailability zoneを使うように作れる。
