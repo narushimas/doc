@@ -67,8 +67,6 @@ lombocやmavenの事前インストールなどは不要
         </dependency>
     ```
 
-    * (誤植) DATE_TIME_FORMATTじゃなくて、DATE_TIME_FORMATTER
-
     * AssertJはメソッドチェーンで書ける
 
         ```java
@@ -98,7 +96,7 @@ lombocやmavenの事前インストールなどは不要
         tuple使うと、()がつく。単体の結果は()つかないので、containsで失敗になる。
 
 1. Serviceの単体テスト
-    Repositoryのメソッドには、BDDMockitoを使う。
+    RepositoryはMock化する。Mockitoより、BDDMockitoを使う。
 
 ### mockito, BDDMockitoのメソッド
 
