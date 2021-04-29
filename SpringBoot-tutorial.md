@@ -96,3 +96,34 @@ lombocやmavenの事前インストールなどは不要
 
     * List<DTO>の試験なら、tupleを使うけど、DTO単体の時はtupleを使わない
         tuple使うと、()がつく。単体の結果は()つかないので、containsで失敗になる。
+
+1. Serviceの単体テスト
+    Repositoryのメソッドには、BDDMockitoを使う。
+
+### mockito, BDDMockitoのメソッド
+
+| method | 役割 |
+| --- | --- |
+| times(int n) | n : 呼ばれる期待回数 |
+
+* setup mock
+    BDDMockitoでは、@Mockがない。givenで用意する。
+    given(モック化するインスタンス).使うメソッド
+
+  * 戻り値がある時
+        given(todoRepository).findById(1L).willReturn(Optional.of(expectTodo));
+  * 戻り値がない時
+        willDoNothing().given(todoRepository).create(expectTodo);
+  * 例外をthrowする時
+        willThrow(new SQLException("test")).given(this.resultSet).close();
+
+* check
+    アサーション
+    then(モック化したインスタンス).xxx;
+
+    結果確認
+    assertThat(xxx, yyy);
+
+> memo
+> Mockオブジェクトは、全メソッドがロジックなしのメソッド（スタブメソッド）になる。
+> スタブメソッドは、defaultでNullを返すことになっている。
