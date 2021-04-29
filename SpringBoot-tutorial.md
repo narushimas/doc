@@ -105,9 +105,9 @@ lombocやmavenの事前インストールなどは不要
 | times(int n) | n : 呼ばれる期待回数 |
 
 * setup mock
-    BDDMockitoでは、@Mockがない。givenで用意する。
-    given(モック化するインスタンス).使うメソッド
+    BDDMockitoでは、@MockBeanでモックを作る
 
+    動作の定義
   * 戻り値がある時
         given(todoRepository).findById(1L).willReturn(Optional.of(expectTodo));
   * 戻り値がない時
