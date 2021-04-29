@@ -21,14 +21,6 @@ lombocやmavenの事前インストールなどは不要
 ## 4. REST APIの作成
 
 1. pomの設定
-    * dozermapperが使えない(mavenの不具合？セントラルにはあるっぽい)
-
-    ```xml
-        <dependency>
-            <groupId>com.github.dozermapper</groupId>
-            <artifactId>dozer-spring-boot-starter</artifactId>
-        </dependency>
-    ```
 
 1. TodoResourceクラスの作成
     * javax.validationは、pomにて追加が必要
@@ -135,7 +127,14 @@ lombocやmavenの事前インストールなどは不要
     比較検証
     assertThat(xxx, yyy);
 
-> memo
-> Mockオブジェクトは、全メソッドがロジックなしのメソッド（スタブメソッド）になる。
-> スタブメソッドは、defaultでNullを返すことになっている。
-> @SpyでMockオブジェクトを生成すると、メソッドがロジックをもったままになる。特定のメソッドだけthenなどで上書きすれば、狙ったメソッドだけ部分的にスタブ化できる。
+    > [memo]
+    > Mockオブジェクトは、全メソッドがロジックなしのメソッド（スタブメソッド）になる。
+    > スタブメソッドは、defaultでNullを返すことになっている。
+    > @SpyでMockオブジェクトを生成すると、メソッドがロジックをもったままになる。特定のメソッドだけthenなどで上書きすれば、狙ったメソッドだけ部分的にスタブ化できる。
+
+1. Controllerの作成
+    業務で書いてきたものとの違いは、RestControllerであること。
+
+    * RequestMappingをコントローラーに付与して、メソッドにはGetMappingと、PostMappingを使ってリクエストの種類に応じて対応する。
+
+    * Formを作って、JSPを返すのではなく、Formと同じような入れ物であるResourceを返す。
