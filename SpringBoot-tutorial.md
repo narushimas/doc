@@ -90,7 +90,7 @@ lombocやmavenの事前インストールなどは不要
 1. Serviceの単体テスト
     RepositoryはMock化する。Mockitoより、BDDMockitoを使う。
 
-### mockito, BDDMockitoのメソッド
+#### mockito, BDDMockitoのメソッド
 
 | method | 役割 |
 | --- | --- |
@@ -142,7 +142,7 @@ lombocやmavenの事前インストールなどは不要
 1. Controllerの単体テスト
     ResponseEntityと、getForEntityを理解する必要がある。
 
-## アプリケーションの実行
+## 5. アプリケーションの実行
 
 1. 実行可能jarファイルの作成
     mavenタブから、mvn package
@@ -151,4 +151,4 @@ lombocやmavenの事前インストールなどは不要
     jarを右クリックして実行
 
 1. REST API Clientによる動作確認
-    REST APIの実行は、Chrome拡張の、Talend API Tester(旧名 DHC)
+    REST APIの実行は、Chrome拡張の、Talend API Tester(旧名 DHC)を使うといい
