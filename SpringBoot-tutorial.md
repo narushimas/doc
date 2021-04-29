@@ -119,11 +119,25 @@ lombocやmavenの事前インストールなどは不要
 
 * check
     アサーション
-    then(モック化したインスタンス).xxx;
+    should。mockitoでいう、verify。
+    呼び出された回数を確認するなどに使う。
 
-    結果確認
+    mockito
+
+    ```java
+    verify(service, times(1)).getContentById(id);
+    ```
+
+    BDDMockito
+
+    ```java
+    then(service).should(times(1)).getContentById(id);
+    ```
+
+    比較検証
     assertThat(xxx, yyy);
 
 > memo
 > Mockオブジェクトは、全メソッドがロジックなしのメソッド（スタブメソッド）になる。
 > スタブメソッドは、defaultでNullを返すことになっている。
+> @SpyでMockオブジェクトを生成すると、メソッドがロジックをもったままになる。特定のメソッドだけthenなどで上書きすれば、狙ったメソッドだけ部分的にスタブ化できる。
