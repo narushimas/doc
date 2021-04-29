@@ -132,9 +132,12 @@ lombocやmavenの事前インストールなどは不要
     > スタブメソッドは、defaultでNullを返すことになっている。
     > @SpyでMockオブジェクトを生成すると、メソッドがロジックをもったままになる。特定のメソッドだけthenなどで上書きすれば、狙ったメソッドだけ部分的にスタブ化できる。
 
-1. Controllerの作成
+1. TodoControllerクラスの作成
     業務で書いてきたものとの違いは、RestControllerであること。
 
-    * RequestMappingをコントローラーに付与して、メソッドにはGetMappingと、PostMappingを使ってリクエストの種類に応じて対応する。
+    * RequestMappingをコントローラーに付与して、メソッドにはGetMappingと、PostMapping, PutMapping, DeleteMappingを使ってリクエストの種類に応じて対応する。
 
     * Formを作って、JSPを返すのではなく、Formと同じような入れ物であるResourceを返す。
+
+1. Controllerの単体テスト
+    ResponseEntityと、getForEntityを理解する必要がある。
