@@ -10,6 +10,8 @@ https://news.mynavi.jp/itsearch/article/devsoft/4354
 
 AWSは（多分）慣れるまでネットワークが難しい。単語を覚えるのと、それぞれの役割を正しく理解することを意識して取り組みたい。
 
+わかりやすい気がした動画($https://www.youtube.com/watch?v=6muiXYF6CjE)
+
 ### 単語整理
 
 * availability zone :
@@ -20,6 +22,9 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   VPCの中に複数のサブネットを作って構築する。
   VPCのなかに、複数のavailability zoneを使うように作れる。
 
+* サブネット
+  VPCをさらに複数のネットワークに分けた時の１つ
+
 * ルートテーブル
   各サブネットに設定する。
   ipアドレスを見て、どこに送信するかを判定する時に使うテーブル。
@@ -29,9 +34,31 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   | 送信先 | ターゲット | 備考　|
   | --- | --- | --- |
   | 10.2.20.0/26 | LOCAL | 自身のサブネット内なら当然LOCAL |
-  | 0.0.0.0/0 | Internet Gateway | 上に当てはまらなかったもの全て、インターネットに。これをデフォルトゲートウェイという。 |
+  | 0.0.0.0/0 | Internet Gateway | 上に当てはまらなかったもの全て、インターネットに。デフォルトゲートウェイという。 |
 
-  > ルートテーブルのターベットにInternet Gatewayがあれば、パブリックサブネットとよぶ。そうでなければプライベートサブネット
+  > ルートテーブルのターベットにInternet Gatewayがあれば、パブリックサブネットとよぶ。そうでなければプライベートサブネット。特にパブリックサブネットはデフォルトゲートウェイがInternet Gateway
+
+* Internet Gateway
+
+  VPC内のリソースと、インターネットをつなげるGateway
+  サブネットのルートテーブルで、これを指定することでサブネットはインターネットにアクセスできる。
+  パブリックサブネットなら、ルートテーブルのデフォルトゲートウェイがInternet Gatewayになっている。
+
+* NAT Gateway
+
+  プライベートサブネットから、インターネットにアクセスするためGateway。NAT GatewayからInternet Gatewayを通り、インターネットに接続する。
+  ただし、インターネットからプライベートサブネットには入れない。
+  NAT Gatewayは、publicサブネットにおかないとダメ。
+
+> Internet Gateway, NAT Gatewayともに、デフォルトで可用性が担保されていて、必要に応じて自動で複製される。
+
+* ENI
+
+  elastic network interface (いわゆるNIC)
+
+  IPアドレスをアタッチするカードであり、NATゲートウェイ（ハブ）やEC2(サーバ)に指していると思うといい？
+  
+### 作業
 
 * 自分がもらったサブネット
   10.2.20.0/24
@@ -59,25 +86,30 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   | Publicサブネット2 | `10.2.20.128/26` |
   | Privateサブネット2 | `10.2.20.192/26`|
 
-    1. amazonコンソールに、narushimasユーザでログイン
+ 1. amazonコンソールに、narushimasユーザでログイン
 
-    2. 上の検索窓から、`VPC`で検索
+ 2. 上の検索窓から、`VPC`で検索
 
-    3. まずElastic IPアドレスを取得する
+ 3. まずElastic IPアドレスを取得する
 
-        | 項目 | 設定値 |
-        | --- | --- |
-        | tag | Name: `ma-narushima-elasticip` |
+     | 項目 | 設定値 |
+     | --- | --- |
+     | tag | Name: `ma-narushima-elasticip` |
 
-       特に指定しなかったけど、以下になった。
-       `35.74.10.18`
+    特に指定しなかったけど、以下になった。
+    `35.74.10.18`
 
-    4. 以下の情報を入力して、作成。
+ 4. 以下の情報を入力して、作成。
 
-        | 項目 | 設定値 | 備考 |
-        | --- | --- | --- |
-        | IPv4 CIDR block:* | `10.2.20.0/24` | - |
-        | Name | `ma-narushima-vpc` | - |
-        | Public subnet's IPv4 CIDR:* | 10.2.20.128/25 | こうすることで、128以上がpublicになる |
-        | Private subnet's IPv4 CIDR:* | 10.2.20.0/25| 1~127がpublicになる |
-        | Elastic IP Allocation ID:* | 上で取得したElastic IP| - |
+     | 項目 | 設定値 | 備考 |
+     | --- | --- | --- |
+     | IPv4 CIDR block:* | `10.2.20.0/24` | - |
+     | Name | `ma-narushima-vpc` | - |
+     | Public subnet's IPv4 CIDR:* | 10.2.20.0/26 | こうすることで、1 ~ 63がPublicサブネットで利用できるIPになる |
+     | Private subnet's IPv4 CIDR:* | 10.2.20.64/26| 64~127がPrivateサブネットで利用できるIPになる |
+     | Elastic IP Allocation ID:* | 上で取得したElastic IP | - |
+
+    サブネットのtag名は、作成時に指定できない？っぽいので、VPC作成後にサブネットから検索して、`ma-narushima-Public-subnet1`,  `ma-narushima-Private-subnet1`とした。
+
+    >一度、サブネットのIPアドレスの分割を間違えた
+    アベイラビリティゾーン用のIPアドレスが残っていないので、VPCを作り直そうと思った。しかしVPCは消せなかった。VPC内のNATゲートウェイを削除したら、消せるようになった。
