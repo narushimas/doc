@@ -111,5 +111,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 
     サブネットのtag名は、作成時に指定できない？っぽいので、VPC作成後にサブネットから検索して、`ma-narushima-Public-subnet1`,  `ma-narushima-Private-subnet1`とした。
 
-    >一度、サブネットのIPアドレスの分割を間違えた
+    > 一度、サブネットのIPアドレスの分割を間違えた
     アベイラビリティゾーン用のIPアドレスが残っていないので、VPCを作り直そうと思った。しかしVPCは消せなかった。VPC内のNATゲートウェイを削除したら、消せるようになった。
+
+    > VPCと同時に作ったサブネットのavailablity zone指定し忘れたが、Public, Privateともに`ap-northeast-1a`になっていたので、これとして進める。つまり、新しく作るサブネットはこことは別のavailability zoneにつくる。`ap-northeast-1c`にした。
