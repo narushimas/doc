@@ -86,32 +86,39 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   | Publicサブネット2 | `10.2.20.128/26` |
   | Privateサブネット2 | `10.2.20.192/26`|
 
- 1. amazonコンソールに、narushimasユーザでログイン
+  1. amazonコンソールに、narushimasユーザでログイン
 
- 2. 上の検索窓から、`VPC`で検索
+  2. 上の検索窓から、`VPC`で検索
 
- 3. まずElastic IPアドレスを取得する
+  3. まずElastic IPアドレスを取得する
 
-     | 項目 | 設定値 |
-     | --- | --- |
-     | tag | Name: `ma-narushima-elasticip` |
+      | 項目 | 設定値 |
+      | --- | --- |
+      | tag | Name: `ma-narushima-elasticip` |
 
-    特に指定しなかったけど、以下になった。
-    `35.74.10.18`
+      特に指定しなかったけど、以下になった。
+      `35.74.10.18`
 
- 4. 以下の情報を入力して、作成。
+  4. 以下の情報を入力して、作成。
 
-     | 項目 | 設定値 | 備考 |
-     | --- | --- | --- |
-     | IPv4 CIDR block:* | `10.2.20.0/24` | - |
-     | Name | `ma-narushima-vpc` | - |
-     | Public subnet's IPv4 CIDR:* | 10.2.20.0/26 | こうすることで、1 ~ 63がPublicサブネットで利用できるIPになる |
-     | Private subnet's IPv4 CIDR:* | 10.2.20.64/26| 64~127がPrivateサブネットで利用できるIPになる |
-     | Elastic IP Allocation ID:* | 上で取得したElastic IP | - |
+      | 項目 | 設定値 | 備考 |
+      | --- | --- | --- |
+      | IPv4 CIDR block:* | `10.2.20.0/24` | - |
+      | Name | `ma-narushima-vpc` | - |
+      | Public subnet's IPv4 CIDR:* | 10.2.20.0/26 | こうすることで、1 ~ 63がPublicサブネットで利用できるIPになる |
+      | Private subnet's IPv4 CIDR:* | 10.2.20.64/26| 64~127がPrivateサブネットで利用できるIPになる |
+      | Elastic IP Allocation ID:* | 上で取得したElastic IP | - |
 
-    サブネットのtag名は、作成時に指定できない？っぽいので、VPC作成後にサブネットから検索して、`ma-narushima-Public-subnet1`,  `ma-narushima-Private-subnet1`とした。
+      サブネットのtag名は、作成時に指定できない？っぽいので、VPC作成後にサブネットから検索して、`ma-narushima-Public-subnet1`,  `ma-narushima-Private-subnet1`とした。
 
-    > 一度、サブネットのIPアドレスの分割を間違えた
-    アベイラビリティゾーン用のIPアドレスが残っていないので、VPCを作り直そうと思った。しかしVPCは消せなかった。VPC内のNATゲートウェイを削除したら、消せるようになった。
+      一度、サブネットのIPアドレスの分割を間違えた.
+      アベイラビリティゾーン用のIPアドレスが残っていないので、VPCを作り直そうと思った。しかしVPCは消せなかった。VPC内のNATゲートウェイを削除したら、消せるようになった。
 
-    > VPCと同時に作ったサブネットのavailablity zone指定し忘れたが、Public, Privateともに`ap-northeast-1a`になっていたので、これとして進める。つまり、新しく作るサブネットはこことは別のavailability zoneにつくる。`ap-northeast-1c`にした。
+  5. 追加でサブネットを作成
+
+      VPCと同時に作ったサブネットのavailablity zone指定し忘れたが、Public, Privateともに`ap-northeast-1a`になっていたので、これとして進める。つまり、新しく作るサブネットはこことは別のavailability zoneにつくる。`ap-northeast-1c`にした。`ma-narushima-Public-subnet2`, `ma-narushima-Private-subnet2`
+
+  6. ルートテーブルのタグ変更
+  
+      よくわからないけど、ルートテーブルが2つありタグがついていないので、`ma-narushima-routetable1`, `ma-narushima-routetable2`としておいた。これもよくわからないけど、Mainという項目がYesのものと、NoのものがあったのでYesとなっているものを1にしておいた。
+  
