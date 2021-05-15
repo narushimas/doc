@@ -218,4 +218,37 @@ public class MvcConfig implements WebMvcConfigurer {
 }
 ```
 
+* コンテキストパスの設定
+
+resourcesの下にapplication.propertiesがあったが、これをymlに変えて、記事の通り実装した。
+
+* 他のRestApiの呼び出し
+
+RestOperationsを使う
+
+```java
+@RequestMapping(method = RequestMethod.GET, value = "users" )
+public String getUsers(Model model){
+    String service = "/backend/api/v1/users";
+    model.addAttribute("users", restOperations.getForObject(service, User[].class));
+    return "users";
+}
+```
+
+* DNSサーバの設定
+
+bffのapplication.ymlに以下を記述する。
+
+ALBのDNSドメインをプロパティファイルから取得して設定することで、Javaソースコード上でAWS環境に依存しないアプリケーション実装にすることができる。
+（ServicePropertiesで、下の値をもったString dnsを定義できる）
+
+具体的なurlは、AWSコンソールのALBのprivateからとってきた。
+
+```yml
+service:
+  dns: http://internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
+```
+
+記事にはないけど、ServicePropetiesクラスは、@Dataつけてgetterを自動生成しておかないとダメ。WebMvcConfigurerからgetDns()を呼び出すので。
+
 ## 第7回 Dockerイメージ作成
