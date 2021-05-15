@@ -2,7 +2,7 @@
 
 第4回から順にやっていく (初心者の館(3))
 
-## 第4回 環境設定とネットワーク設定
+## 第4回 AWS上のネットワーク設定
 
 https://news.mynavi.jp/itsearch/article/devsoft/4354
 
@@ -153,6 +153,36 @@ https://news.mynavi.jp/itsearch/article/devsoft/4359
 
   よくわからなかったけど、ヘルスチェック用のhtmlの名前は、パブリック、プライベート両方とも`/backend-for-frontend/index.html`とした。アプリケーションコンテキストパスの下にこれをつけて、ヘルスチェックするらしい。
 
-## 第6回 AWS ECS上に構築するSpringアプリケーション
+## 第6回 SpringBootアプリケーション作成
 
 https://news.mynavi.jp/itsearch/article/devsoft/4363
+
+プロジェクト作成部分に、なかなか説明が少ない。
+
+以下プロジェクト名にしてみた
+
+* Backendアプリケーション: backend
+* BFFアプリケーション: bff
+
+SpringInitializerを使った。mavenプロジェクト。
+
+ただし、データベースアクセスとか、Modelクラスとかないので、SpringBootチュートリアルでしたような、Mybatis Frameworkや、lombok, spring webなどのチェックは付与しなかった。
+
+#### GitHubへの登録
+
+IntelliJにメニューから、「プロジェクトをGitHubに登録」的なボタンを押して、
+認証したら、サクッとリポジトリ登録できた。楽で驚いた。
+
+backend
+
+https://github.com/narushimas/backend
+
+bff
+
+#### pom.xmlへの追記
+
+記事にある記述を貼り付けていく。
+IntelliJからGit操作すると、addなしでcommitできる？
+diffもみやすい。
+
+## 第7回 Dockerイメージ作成
