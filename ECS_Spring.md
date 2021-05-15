@@ -4,13 +4,13 @@
 
 ## 第4回 AWS上のネットワーク設定
 
-https://news.mynavi.jp/itsearch/article/devsoft/4354
+<https://news.mynavi.jp/itsearch/article/devsoft/4354>
 
 `初めに`
 
 AWSは（多分）慣れるまでネットワークが難しい。単語を覚えるのと、それぞれの役割を正しく理解することを意識して取り組みたい。
 
-わかりやすい気がした動画($https://www.youtube.com/watch?v=6muiXYF6CjE)
+わかりやすい気がした動画<https://www.youtube.com/watch?v=6muiXYF6CjE>
 
 ### 単語整理
 
@@ -61,7 +61,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 ### 作業
 
 * 自分がもらったサブネット
-  10.2.20.0/24
+10.2.20.0/24
 
 > 10台は、全てプライベートIPアドレス
 
@@ -129,7 +129,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 
 ## 第5回 ロードバランサの設定
 
-https://news.mynavi.jp/itsearch/article/devsoft/4359
+<https://news.mynavi.jp/itsearch/article/devsoft/4359>
 
 　ロードバランサはALB(Application Load Barancer)。ALBはパブリックサブネット用と、プライベートサブネット用に2つ用意する。
 （疑問）初歩的だけど、この絵について、プライベートにロードバランサ用意しているということは、パブリックはアベイラビリティゾーンA, プライベートはアベイラビリティゾーンBというような使い方をしたいため？
@@ -155,7 +155,7 @@ https://news.mynavi.jp/itsearch/article/devsoft/4359
 
 ## 第6回 SpringBootアプリケーション作成
 
-https://news.mynavi.jp/itsearch/article/devsoft/4363
+<https://news.mynavi.jp/itsearch/article/devsoft/4363>
 
 プロジェクト作成部分に、なかなか説明が少ない。
 
@@ -169,20 +169,20 @@ SpringInitializerを使った。mavenプロジェクト。
 ただし、データベースアクセスとか、Modelクラスとかないので、SpringBootチュートリアルでしたような、Mybatis Frameworkや、lombok, spring webなどのチェックは付与しなかった。
 `間違い` Modelクラスあるし、Lombok使う前提で描かれてるので、lombokだけはチェックしておけばよかった。
 
-#### GitHubへの登録
+### GitHubへの登録
 
 IntelliJの上部メニューのVCSから、「Share Project on Github」を押して、
 認証したら、サクッとリポジトリ登録できた。楽で驚いた。
 
 backend
 
-https://github.com/narushimas/backend
+<https://github.com/narushimas/backend>
 
 bff
 
-https://github.com/narushimas/bff
+<https://github.com/narushimas/bff>
 
-#### pom.xmlへの追記
+### pom.xmlへの追記
 
 2つのプロジェクト両方に、記事にある記述を貼り付けていく。
 dependencyだけ追加すれば大丈夫だった。pluginはmavenのものだったが、IntelliJでmavenプロジェクトで作っていたからか、元々設定できていた。
@@ -205,7 +205,7 @@ backendプロジェクトには、あとからlombok追加
 
 GitHubに川端さんのサンプルがあったので、これと同じようにUserを作った。
 
-https://github.com/debugroom/mynavi-sample-aws-ecs/blob/master/backend/src/main/java/org/debugroom/mynavi/sample/ecs/backend/app/model/User.java
+<https://github.com/debugroom/mynavi-sample-aws-ecs/blob/master/backend/src/main/java/org/debugroom/mynavi/sample/ecs/backend/app/model/User.java>
 
 * ComponentScan対象ディレクトリの設定
 
