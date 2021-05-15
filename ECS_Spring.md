@@ -2,7 +2,7 @@
 
 第4回から順にやっていく (初心者の館(3))
 
-## 第4回
+## 第4回 環境設定とネットワーク設定
 
 https://news.mynavi.jp/itsearch/article/devsoft/4354
 
@@ -127,4 +127,26 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 
       元々、最初に作ったパブリックサブネットだけ、カスタムルートテーブルに登録されていて、残り3つはメインルートテーブルに登録されていた。メインルートテーブルのパブリックサブネットをカスタムルートテーブルに登録した。
 
-## 第5回
+## 第5回 ロードバランサの設定
+
+https://news.mynavi.jp/itsearch/article/devsoft/4359
+
+　ロードバランサはALB(Application Load Barancer)。ALBはパブリックサブネット用と、プライベートサブネット用に2つ用意する。
+（疑問）初歩的だけど、この絵について、プライベートにロードバランサ用意しているということは、パブリックはアベイラビリティゾーンA, プライベートはアベイラビリティゾーンBというような使い方をしたいため？
+
+  Elastic Load Barancerは、Application, Network, Gatewayに分かれる。
+
+  ターゲットグループ
+
+    トラフィックを流す対象のこと。EC2, Lambda, プライベートIPアドレスなど。
+
+  設定については、以下だけ注意した。
+
+  名前: ma-narushima-public-alb, ma-narushima-private-alb
+
+  名前： ma-narushima-public-alb, ma-narushima-private-tg
+
+  プライベートサブネットのロードバランサのセキュリティグループのソース
+  `10.2.20.0/24` (VPCのIPアドレス)
+
+  よくわからなかったけど、ヘルスチェック用のhtmlの名前は、パブリック、プライベート両方とも`/backend-for-frontend/index.html`とした。アプリケーションコンテキストパスの下にこれをつけて、ヘルスチェックするらしい。
