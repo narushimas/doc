@@ -167,10 +167,11 @@ https://news.mynavi.jp/itsearch/article/devsoft/4363
 SpringInitializerを使った。mavenプロジェクト。
 
 ただし、データベースアクセスとか、Modelクラスとかないので、SpringBootチュートリアルでしたような、Mybatis Frameworkや、lombok, spring webなどのチェックは付与しなかった。
+`間違い` Modelクラスあるし、Lombok使う前提で描かれてるので、lombokだけはチェックしておけばよかった。
 
 #### GitHubへの登録
 
-IntelliJにメニューから、「プロジェクトをGitHubに登録」的なボタンを押して、
+IntelliJの上部メニューのVCSから、「Share Project on Github」を押して、
 認証したら、サクッとリポジトリ登録できた。楽で驚いた。
 
 backend
@@ -179,10 +180,42 @@ https://github.com/narushimas/backend
 
 bff
 
+https://github.com/narushimas/bff
+
 #### pom.xmlへの追記
 
-記事にある記述を貼り付けていく。
+2つのプロジェクト両方に、記事にある記述を貼り付けていく。
+dependencyだけ追加すれば大丈夫だった。pluginはmavenのものだったが、IntelliJでmavenプロジェクトで作っていたからか、元々設定できていた。
+
 IntelliJからGit操作すると、addなしでcommitできる？
 diffもみやすい。
+
+Userクラスの記述がない？ようだけど、実装方法がわからない。
+Controllerでの使い方を見るに、Lombok BuilderというようなModelの実装方法のようだ。
+
+backendプロジェクトには、あとからlombok追加
+
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
+```
+
+GitHubに川端さんのサンプルがあったので、これと同じようにUserを作った。
+
+https://github.com/debugroom/mynavi-sample-aws-ecs/blob/master/backend/src/main/java/org/debugroom/mynavi/sample/ecs/backend/app/model/User.java
+
+* ComponentScan対象ディレクトリの設定
+
+今回は、app.web下のContorollerをscanしたいので、これで十分。
+
+```java
+@Configuration
+@ComponentScan("app.web")
+public class MvcConfig implements WebMvcConfigurer {
+}
+```
 
 ## 第7回 Dockerイメージ作成
