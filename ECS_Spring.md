@@ -237,6 +237,9 @@ public String getUsers(Model model){
 
 * DNSサーバの設定
 
+このDNSは、フロントからバックエンドをURLベースでたどり着くための設定で、フロント側のAPに設定する
+DNSのマッピング情報は、バックエンド用のALBに設定しておく。
+
 bffのapplication.ymlに以下を記述する。
 
 ALBのDNSドメインをプロパティファイルから取得して設定することで、Javaソースコード上でAWS環境に依存しないアプリケーション実装にすることができる。
@@ -248,6 +251,12 @@ ALBのDNSドメインをプロパティファイルから取得して設定す�
 service:
   dns: http://internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
 ```
+
+将来的に、クラウドフォーメーションのスタックからDNSサーバのurlなどを取得できる。
+
+CloudFormationのスタックには、作ってみるまで分からないサービスの色々な値が入る。
+DNSの論理名もALB作ってみるまで分からないけど、その情報のキーは定義しておけるから、実際に作ってみて設定された値を、キーを元に取りだす。
+
 
 記事にはないけど、ServicePropetiesクラスは、@Dataつけてgetterを自動生成しておかないとダメ。WebMvcConfigurerからgetDns()を呼び出すので。
 
