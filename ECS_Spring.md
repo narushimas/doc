@@ -302,10 +302,18 @@ docker build backend/ -t narushimas/backend:latest
 
 dockerユーザは元々、narushimasで作ってあったのでそれを使う。
 
+* Dockerビルドの失敗
+
 docker buildは、内部のmvn installで失敗してしまった。
 
-`invalid target release: 11`
+2つ問題があった
 
-というエラーで、dockerがjava1.8でmvnを動かしているのに、pomのjava-versionが11だったのが問題だったらしい。1.8にしたら直った。
-ただし、一度でもpomのjava-versionが11で実行されていると、11で作られてしまっているものが残っている？のか1.8にしても同じエラーが出続けた。docker imagesを見ると、imageがいくつかできていたのでdocker rmiで全部消して再度docker buildしたら成功した。
-Docker buildは途中で失敗しても情報を保持しているらしい？
+1. `invalid target release: 11`
+
+    というエラーで、dockerがjava1.8でmvnを動かしているのに、pomのjava-versionが11だったのが問題だったらしい。1.8にしたら直った。
+    ただし、一度でもpomのjava-versionが11で実行されていると、11で作られてしまっているものが残っている？のか1.8にしても同じエラーが出続けた。docker imagesを見ると、imageがいくつかできていたのでdocker rmiで全部消して再度docker buildしたら成功した。
+    Docker buildは途中で失敗しても情報を保持しているらしい？
+
+2. `There are test failures.`
+
+    デフォルトで生成された中身のないテストクラスにメソッドが1つあって、それがfail扱いされていた。削除したら直った。
