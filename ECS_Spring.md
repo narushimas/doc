@@ -378,6 +378,9 @@ Dockerコンテナの設定（マッピングするポート番号や、割り�
 
 * ECSコンテナに割り当てるタスク実行用のIAMロール作成
   
+IAMメニューから、ロールの作成
+（ユースケースって何？）
+
 ロール名: ma-narushima-ecs-task-role
 
 ロールを作って、そこに付与したいポリシー（例えばS3アクセスポリシー）をつけていく。
@@ -412,3 +415,16 @@ ma-narushima-ecs-bff
 0とすると、うまくやってくれるらしい。
 
 ## 第10回 ECSサービスの実行
+
+* AmazonECSServiceRolePolicyをアタッチしたIAMロールの作成
+
+第9回の記事でも似たことやってので、それを参考に実施する。
+
+(前回作ったTaskExecutionと、今回のServiceRoleのポリシーってどんな違いがある？ServiceRoleの方が権限が強そうな感じもするけど)
+
+ロール名は、
+ma-narushima-ecs-service-roleという名前にした。
+
+しかし、ロール作成時に、
+`Cannot attach a Service Role Policy to a Customer Role.`
+というエラーが発生した。
