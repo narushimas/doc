@@ -267,3 +267,14 @@ Elastic Container Service
 * Docker化するために
 
 プロジェクトの中に、Dockerfileを作成する
+
+backendプロジェクト、bffプロジェクトの両方に追加する
+
+Dockerfileの内容は、
+
+1. JDKやmavenのインストール
+1. gitからプロジェクトのclone
+1. mavenビルド
+1. jar実行
+
+という流れ
