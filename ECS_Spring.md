@@ -434,3 +434,6 @@ Customer Roleって何？
 TODO 公式ページを読む
 
 <https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_roles_terms-and-concepts.html>
+
+Service Roleというのは、サービスに割り当てるRoleらしい。
+Customer Roleは、ユーザに割り当てるRole。
