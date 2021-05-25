@@ -327,7 +327,9 @@ docker pushに成功してできた
 
 ## 第8回 ECSクラスタの作成
 
-ECS(Elastic Container Service)は、dockerが動くEC2だと思おう。それに限らないらしいが、しばらくそれで頭に入れておいてよさそう。
+ECS(Elastic Container Service)クラスタは、dockerが動くEC2だと思おう。それに限らないらしいが、しばらくそれで頭に入れておいてよさそう。
+
+ECSクラスタは、public, privateそれぞれについて、アベイラビリティゾーンの数だけ必要なので、4つ作るのだけど、時間がかかるので、今回はひとまずpublic, private1つずつで対応する。
 
 クラスターテンプレートは、「EC2 Linux + ネットワーキング」で作成する。（多分裏でできるのは、EC2で、その上にdockerのインストールなどがされてる感じ？）
 
@@ -366,4 +368,18 @@ javaアプリが使うポートは32768-61000の中のどれかにはなるっ�
 
 * public
 
-privateとほとんど同じで、カスタムTCPルールのソースが、publicのALBになるくらいでよさそう。
+privateとほとんど同じ。ただし、カスタムTCPルールのソースは、publicのALBにした。
+
+## 第9回 ECSタスクの定義
+
+ECSタスクとは
+
+Dockerコンテナの設定（マッピングするポート番号や、割り当てるCPUやメモリ）を指定すること。docker-composeファイルに近いな？
+
+* ECSコンテナに割り当てるタスク実行用のIAMロール作成
+  
+ロール名: ma-narushima-ecs-task-role
+
+ロールを作って、そこに付与したいポリシー（例えばS3アクセスポリシー）をつけていく。
+
+今回はとりあえず、AmazonECSTaskExecutionRolePolicyでOK。
