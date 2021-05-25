@@ -343,6 +343,8 @@ VPCは、自分が以前作ったものを選択
 private -> ma-narushima-Private-subnet1
 public -> ma-narushima-Public-subnet1
 
+* キーペアは、ma-narushimaとかいうやつ。サンプル系はこれで固定しよう。
+
 * セキュリティグループの設定
 
 ソースをどう設定すればいいかわからない。
@@ -363,3 +365,5 @@ SSHのソースは、publicのEC2からのアクセスしか許さないから�
 javaアプリが使うポートは32768-61000の中のどれかにはなるってことだろう。publicのbffから、privateのALBを介してprivateのECSに到達したいので、このALBはprivateで良いはずだ。そしてECSにアプリからアクセスするのは、privateのALBを介する時だけということだろう。
 
 * public
+
+privateとほとんど同じで、カスタムTCPルールのソースが、publicのALBになるくらいでよさそう。
