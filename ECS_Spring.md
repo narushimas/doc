@@ -290,6 +290,7 @@ pemの権限は400にしておく必要があるかも。
 Amazon-linuxで作ったので、初期ユーザはec2-userだった。
 
 dockerコマンドをsudoなしで使えるようにするには、実行ユーザをdockerグループに追加する。
+-> グループに追加してもsudoしないと実行できないが。。？
 
 dockerビルドで作るイメージ名はgitのリポジトリ名と揃えてみた
 
@@ -299,3 +300,4 @@ docker build backend/ -t narushimas/backend:latest
 
 -t でイメージ名とタグ名を指定できる
 
+dockerユーザは元々、narushimasで作ってあったのでそれを使う。
