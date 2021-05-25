@@ -317,3 +317,10 @@ docker buildは、内部のmvn installで失敗してしまった。
 2. `There are test failures.`
 
     デフォルトで生成された中身のないテストクラスにメソッドが1つあって、それがfail扱いされていた。削除したら直った。
+
+* docker push
+
+docker pushに成功してできた
+
+<https://hub.docker.com/repository/docker/narushimas/backend>
+アカウント narushimas
