@@ -383,3 +383,32 @@ Dockerコンテナの設定（マッピングするポート番号や、割り�
 ロールを作って、そこに付与したいポリシー（例えばS3アクセスポリシー）をつけていく。
 
 今回はとりあえず、AmazonECSTaskExecutionRolePolicyでOK。
+
+* ECSタスク定義
+
+タスク名:
+
+ma-narushima-backend-task
+
+ma-narushima-bff-task
+
+タスクロール:None(タスク実行ロールとややこしいが、こちらはタスクとして動くコンテナユーザの権限かな？)
+
+タスク実行ロール：上で作った、ma-narushima-ecs-task-role
+
+タスクメモリ: springアプリなら1024MB以上ということなので、画像とも合わせて1024MBにした
+
+タスクCPU: よくわからないけど、画像見て1vcpuにした
+
+コンテナ名:
+
+ma-narushima-ecs-backend
+
+ma-narushima-ecs-bff
+
+メモリ制限: 1024にした
+
+ポートマッピングは動的にするために、0:8080とした。
+0とすると、うまくやってくれるらしい。
+
+## 第10回 ECSサービスの実行
