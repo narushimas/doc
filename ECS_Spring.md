@@ -281,3 +281,21 @@ Dockerfileの内容は、
 
 dockerイメージ作るためにLinux使う。
 LinuxはEC2で用意する。
+
+楽に作業できるように、vscodeのRemote developmentを使う
+
+~/.ssh/　を作り、configファイルとpemファイル(EC2作成時に手に入れる)を置く。
+pemの権限は400にしておく必要があるかも。
+
+Amazon-linuxで作ったので、初期ユーザはec2-userだった。
+
+dockerコマンドをsudoなしで使えるようにするには、実行ユーザをdockerグループに追加する。
+
+dockerビルドで作るイメージ名はgitのリポジトリ名と揃えてみた
+
+```shell
+docker build backend/ -t narushimas/backend:latest
+```
+
+-t でイメージ名とタグ名を指定できる
+
