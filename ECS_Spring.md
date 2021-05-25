@@ -428,3 +428,9 @@ ma-narushima-ecs-service-roleという名前にした。
 しかし、ロール作成時に、
 `Cannot attach a Service Role Policy to a Customer Role.`
 というエラーが発生した。
+
+Customer Roleって何？
+
+TODO 公式ページを読む
+
+<https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_roles_terms-and-concepts.html>
