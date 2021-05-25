@@ -10,8 +10,6 @@
 
 AWSは（多分）慣れるまでネットワークが難しい。単語を覚えるのと、それぞれの役割を正しく理解することを意識して取り組みたい。
 
-わかりやすい気がした動画<https://www.youtube.com/watch?v=6muiXYF6CjE>
-
 ### 単語整理
 
 * availability zone :
@@ -261,3 +259,11 @@ DNSの論理名もALB作ってみるまで分からないけど、その情報�
 記事にはないけど、ServicePropetiesクラスは、@Dataつけてgetterを自動生成しておかないとダメ。WebMvcConfigurerからgetDns()を呼び出すので。
 
 ## 第7回 Dockerイメージ作成
+
+* ECSとは
+
+Elastic Container Service
+
+* Docker化するために
+
+プロジェクトの中に、Dockerfileを作成する
