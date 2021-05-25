@@ -324,3 +324,42 @@ docker pushに成功してできた
 
 <https://hub.docker.com/repository/docker/narushimas/backend>
 アカウント narushimas
+
+## 第8回 ECSクラスタの作成
+
+ECS(Elastic Container Service)は、dockerが動くEC2だと思おう。それに限らないらしいが、しばらくそれで頭に入れておいてよさそう。
+
+クラスターテンプレートは、「EC2 Linux + ネットワーキング」で作成する。（多分裏でできるのは、EC2で、その上にdockerのインストールなどがされてる感じ？）
+
+クラスター名
+
+ma-narushima-cluster-private
+ma-narushima-cluster-public
+
+VPCは、自分が以前作ったものを選択
+
+サブネットは、以前作ったものが4つ（private2つ、public2つ）あるが、今回はprivateとpublicを1つずつ使う。
+
+private -> ma-narushima-Private-subnet1
+public -> ma-narushima-Public-subnet1
+
+* セキュリティグループの設定
+
+ソースをどう設定すればいいかわからない。
+privateの方は多分下でいい
+
+* private
+
+追加するのはSSHと、カスタムTCPルール
+
+SSHのソースは、publicのEC2からのアクセスしか許さないから、publicのipアドレス域を指定すればいいかな？と思ったけど、記事ではVPCのipアドレス域を指定してそう？
+
+結局VPCのCIDRで、`10.2.20.0/24`にしておいた。
+
+アベイラビリティゾーンが2つある時、片方のprivateに、別のアベイラビリティゾーンのpublicからsshできていいのか？
+
+カスタムTCPルールには、ポートを32768-61000で指定して、ソースはipアドレスではなく、セキュリティグループで、ALB（多分private）で指定しているセキュリティグループを指定する。`sg-0ef8eeb7dfc2056cb`
+
+javaアプリが使うポートは32768-61000の中のどれかにはなるってことだろう。publicのbffから、privateのALBを介してprivateのECSに到達したいので、このALBはprivateで良いはずだ。そしてECSにアプリからアクセスするのは、privateのALBを介する時だけということだろう。
+
+* public
