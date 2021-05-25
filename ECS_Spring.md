@@ -437,3 +437,5 @@ TODO 公式ページを読む
 
 Service Roleというのは、サービスに割り当てるRoleらしい。
 Customer Roleは、ユーザに割り当てるRole。
+
+AmazonECSServiceRolePolicyってのは、ECSがよく使うサービスに対するポリシーが含まれている？という感じ？
