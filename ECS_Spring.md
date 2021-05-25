@@ -278,3 +278,6 @@ Dockerfileの内容は、
 1. jar実行
 
 という流れ
+
+dockerイメージ作るためにLinux使う。
+LinuxはEC2で用意する。
