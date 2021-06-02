@@ -457,7 +457,14 @@ ma-narushima-cluster-public
 
 クラスターを作成し終えたら、パブリックサブネットのALBのDNSに以下のBFFアプリケーションのパスを加えるというのだが、これはどうやる？
 ややこしい。ALBにDNS用の名前を与えるだけ。。
-アプリの名前を入れたら、ALBに来るように。AWSのどこかのDNSサーバに登録するのか。
 
 パブリックのALBには、最初から以下の名前が指定されているが。。？
 ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com
+
+これでアプリにアクセスできない
+
+<http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html>
+
+bffのDockerFileに誤りがあったので、bffプロジェクトのDockerFileを修正、githubに反映。その後、dockerビルド用のEC2にログインして、git pull --rebase, docker build -t narushimas/bff:latest, docker login, docker push narushimas/bff:latestでDockerHubを最新化した。
+
+さらに、AWSコンソールのECSから、publicのClusterを選択し、updateで最新化した。
