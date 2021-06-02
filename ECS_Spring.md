@@ -439,3 +439,25 @@ Service Roleというのは、サービスに割り当てるRoleらしい。
 Customer Roleは、ユーザに割り当てるRole。
 
 AmazonECSServiceRolePolicyってのは、ECSがよく使うサービスに対するポリシーが含まれている？という感じ？
+
+ma-narushima-ecs-service-roleは、AmazonECSServiceRolePolicyがattachされていない状態で作成されていた。
+
+これにAmazonECSServiceRolePolicyを付与しようとしたが、選択肢に出てこない。
+
+記事には、ECSを初めて起動する場合、ロールは自動で作成されるとあるが、ECS起動したことがないと、Policy付与できないの？？
+
+とりあえずRoleつくらず次に進んでみる
+
+ECSを開き、以前作成したクラスタを選択する。
+
+ma-narushima-cluster-private
+ma-narushima-cluster-public
+
+クラスター起動タイプに、EC2を選ぶ。
+
+クラスターを作成し終えたら、パブリックサブネットのALBのDNSに以下のBFFアプリケーションのパスを加えるというのだが、これはどうやる？
+ややこしい。ALBにDNS用の名前を与えるだけ。。
+アプリの名前を入れたら、ALBに来るように。AWSのどこかのDNSサーバに登録するのか。
+
+パブリックのALBには、最初から以下の名前が指定されているが。。？
+ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com
