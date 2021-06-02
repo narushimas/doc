@@ -465,6 +465,26 @@ ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com
 
 <http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html>
 
+-> `503 Service Temporarily Unavailable`
+
 bffのDockerFileに誤りがあったので、bffプロジェクトのDockerFileを修正、githubに反映。その後、dockerビルド用のEC2にログインして、git pull --rebase, docker build -t narushimas/bff:latest, docker login, docker push narushimas/bff:latestでDockerHubを最新化した。
 
 さらに、AWSコンソールのECSから、publicのClusterを選択し、updateで最新化した。
+
+これでも直らないので、CloudWatchのメトリクスをみて、問題を探してみる。
+
+更新したbffのクラスターで、サービスがrunnigになっていなかった。更新していないbackendの方はrunnig。これが原因か?
+
+ma-narushima-bff-serviceのEventsタグに、以下の記述があった。
+
+EventId: 5b556272-9cf2-497e-9b66-cc5313cc85a6
+
+Date:
+2021-06-02 14:29:43 +0900
+
+Massage: service ma-narushima-bff-service was unable to place a task because no container instance met all of its requirements. Reason: No Container Instances were found in your cluster. For more information, see the Troubleshooting section.
+
+これとは関係ないけど、ECSログのパス
+<https://docs.aws.amazon.com/AmazonECS/latest/developerguide/logs.html>
+
+ECSにsshすると見えるらしいけど、ECSのipアドレスはどこから確認できる？
