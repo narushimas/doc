@@ -501,11 +501,11 @@ VPCに設定するファイアフォールである、Network ACLに問題があ
 
 ECSのpublicクラスター用のEC2(public ipなし)はできてたから、適当にpublicサブネットにpublicIP付きのEC2たてて、そこをアクセスしてみることにする。
 
-すると、ecs用のディレクトリがないことがわかった。
-`/etc/ecs/ecs.config`
+同じエラーが出た人が解析していた
 
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html
+<https://qiita.com/aikan-umetsubo/items/e4cf1c6a092d82503c63>
 
-同じエラーが出た人が解析していたが、その人もこのディレクトリはあったみたいなので、自分とは別の理由らしい。
+自分もこの人と同じように、ping google.comしてみたけど、EC2から外にネットワークが繋がってないらしい。
 
-https://qiita.com/aikan-umetsubo/items/e4cf1c6a092d82503c63
+privateからはインターネットにアクセスできる。繋がってる。これが理由っぽい。
+どうしたら、publicの方をインターネットにつながるようにできるか。
