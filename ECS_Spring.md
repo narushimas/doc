@@ -489,3 +489,23 @@ Massage: service ma-narushima-bff-service was unable to place a task because no 
 <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/logs.html>
 
 ECSにsshすると見えるらしいけど、ECSのipアドレスはどこから確認できる？
+
+と思って探したら、問題のpublicの方は、EC2が起動してなさそう。。(privateの方は起動している)
+
+VPCに設定するファイアフォールである、Network ACLに問題がある？
+
+よくわからないけど、InBoundルールに適当に追加してみた。もともとフルオープンで、意味なさそうだけど。
+<https://ap-northeast-1.console.aws.amazon.com/vpc/home?region=ap-northeast-1#NetworkAclDetails:networkAclId=acl-064ad8c1918f78e1c>
+
+変わらない。
+
+ECSのpublicクラスター用のEC2(public ipなし)はできてたから、適当にpublicサブネットにpublicIP付きのEC2たてて、そこをアクセスしてみることにする。
+
+すると、ecs用のディレクトリがないことがわかった。
+`/etc/ecs/ecs.config`
+
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html
+
+同じエラーが出た人が解析していたが、その人もこのディレクトリはあったみたいなので、自分とは別の理由らしい。
+
+https://qiita.com/aikan-umetsubo/items/e4cf1c6a092d82503c63
