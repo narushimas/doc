@@ -255,7 +255,6 @@ service:
 CloudFormationのスタックには、作ってみるまで分からないサービスの色々な値が入る。
 DNSの論理名もALB作ってみるまで分からないけど、その情報のキーは定義しておけるから、実際に作ってみて設定された値を、キーを元に取りだす。
 
-
 記事にはないけど、ServicePropetiesクラスは、@Dataつけてgetterを自動生成しておかないとダメ。WebMvcConfigurerからgetDns()を呼び出すので。
 
 ## 第7回 Dockerイメージ作成
@@ -346,6 +345,8 @@ private -> ma-narushima-Private-subnet1
 public -> ma-narushima-Public-subnet1
 
 * キーペアは、ma-narushimaとかいうやつ。サンプル系はこれで固定しよう。
+
+ECSも、実態はEC2なので、キーペアを発行していて、IPアドレスと合わせて、ログインできる。ログを確認するときなどに。
 
 * セキュリティグループの設定
 
