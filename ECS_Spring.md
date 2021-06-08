@@ -595,3 +595,12 @@ iptablesのファイアフォールって、sgと一緒か？
 インスタンスにパブリックIPアドレスがないとインターネットアクセスできないらしい。それが原因？プライベートサブネットのやつは、NATゲートウェイがパブリックIP持ってるからそれでできたのか？
 
 <https://aws.amazon.com/jp/premiumsupport/knowledge-center/ec2-connect-internet-gateway/>
+
+これをベースに探して、原因っぽいものを見つけた。
+
+publicサブネットの設定
+
+`Auto-assign public IPv4 address`
+`No`
+
+サブネット内で起動したインスタンスに自動でIP4アドレスを割り当てるもの。これをYesにしないとダメか。
