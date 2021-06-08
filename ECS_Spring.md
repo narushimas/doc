@@ -649,3 +649,9 @@ docker build --no-cache bff/
 
 `http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html`
 
+Call backend serviceボタンを押しても、次の画面にならないから、
+川畑さんのリポジトリ参照してるけど、どうやって記事のような表が帰ってくる？
+
+あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
+いつつかう。
+
