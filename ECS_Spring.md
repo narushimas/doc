@@ -643,3 +643,9 @@ docker build --no-cache bff/
 しかし、遅い。なんか差分だけビルドしてくれるようなのないか。
 
 そしてdocker-hubのコンテナイメージを更新した場合、ECSの実行するコンテナイメージを最新化するには何をすればいい
+
+とりあえずタスクを消したら、なんか自動でタスクが再作成された。
+その後、コンテナイメージも最新化されてたらしく、アクセス成功した。
+
+`http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html`
+
