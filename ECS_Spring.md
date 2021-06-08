@@ -587,3 +587,11 @@ target     prot opt source               destination
 Chain OUTPUT (policy ACCEPT)
 target     prot opt source               destination       
 ```
+
+iptablesのファイアフォールって、sgと一緒か？
+
+<https://ap-northeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-1#SecurityGroup:group-id=sg-0c77b78354a8b35a1>
+
+インスタンスにパブリックIPアドレスがないとインターネットアクセスできないらしい。それが原因？プライベートサブネットのやつは、NATゲートウェイがパブリックIP持ってるからそれでできたのか？
+
+<https://aws.amazon.com/jp/premiumsupport/knowledge-center/ec2-connect-internet-gateway/>
