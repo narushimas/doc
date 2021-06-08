@@ -48,6 +48,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   プライベートサブネットから、インターネットにアクセスするためGateway。NAT GatewayからInternet Gatewayを通り、インターネットに接続する。
   ただし、インターネットからプライベートサブネットには入れない。
   NAT Gatewayは、publicサブネットにおかないとダメ。
+  NAT Gatewayには、Elastic IPをアタッチする。これはプライベートサブネットから外部にアクセスする際のIPを固定するため。IPによるアクセス制限があるサービスなどを使うために必要になったりする。
 
 > Internet Gateway, NAT Gatewayともに、デフォルトで可用性が担保されていて、必要に応じて自動で複製される。
 
@@ -458,6 +459,9 @@ ma-narushima-cluster-public
 
 クラスター起動タイプに、EC2を選ぶ。
 
+裏で以下のように、先頭にEC2ContainerServiceがついたEC2が作成される。
+`EC2ContainerService-ma-narushima-cluster-public`
+
 クラスターを作成し終えたら、パブリックサブネットのALBのDNSに以下のBFFアプリケーションのパスを加えるというのだが、これはどうやる？
 ややこしい。ALBにDNS用の名前を与えるだけ。
 
@@ -503,6 +507,17 @@ VPCに設定するファイアフォールである、Network ACLに問題があ
 
 ECSのpublicクラスター用のEC2(public ipなし)はできてたから、適当にpublicサブネットにpublicIP付きのEC2たてて、そこをアクセスしてみることにする。
 
+問題のあるpublic側のECSのEC2にログインしてlogを確認した
+
+```shell
+cat /var/log/ecs/ecs-agent.log
+```
+
+```log
+level=error time=2021-06-08T07:01:26Z msg="Unable to register as a container instance with ECS: RequestError: send request failed\ncaused by: Post \"https://ecs.ap-northeast-1.amazonaws.com/\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)" module=client.go
+level=error time=2021-06-08T07:01:26Z msg="Error registering: RequestError: send request failed\ncaused by: Post \"https://ecs.ap-northeast-1.amazonaws.com/\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)" module=agent.go
+```
+
 同じエラーが出た人が解析していた
 
 <https://qiita.com/aikan-umetsubo/items/e4cf1c6a092d82503c63>
@@ -513,4 +528,62 @@ privateからはインターネットにアクセスできる。繋がってる�
 どうしたら、publicの方をインターネットにつながるようにできるか。
 
 インターネットに繋がらないとき、ファイアウォールは、セキュリティグループ（EC２単位）、ネットワークACL（サブネット単位）でそれぞれ考える。
-またルートテーブルも考える。
+
+ルートテーブルでは、問題のEC2があるpublicサブネット1がIGWに紐付けできていた。さらにいうと、privateサブネット1は、このpublicサブネット1のNAT GWを利用してインターネットアクセスしているので、サブネットはインターネットアクセスできる状態である。となると、EC2のセキュリティグループの問題？
+
+iptablesで調べてみた
+
+問題のEC2(インターネットアクセスできない)
+
+Chain INPUTをみると、tcp全てDROPしているような？
+
+```shell
+[ec2-user@ip-10-2-20-9 ~]$ sudo iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+DROP       tcp  --  anywhere             anywhere             tcp dpt:51678
+DROP       all  -- !ip-127-0-0-0.ap-northeast-1.compute.internal/8  ip-127-0-0-0.ap-northeast-1.compute.internal/8  ! ctstate RELATED,ESTABLISHED,DNAT
+
+Chain FORWARD (policy DROP)
+target     prot opt source               destination         
+DOCKER-USER  all  --  anywhere             anywhere            
+DOCKER-ISOLATION-STAGE-1  all  --  anywhere             anywhere            
+ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+DOCKER     all  --  anywhere             anywhere            
+ACCEPT     all  --  anywhere             anywhere            
+ACCEPT     all  --  anywhere             anywhere            
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain DOCKER (1 references)
+target     prot opt source               destination         
+
+Chain DOCKER-ISOLATION-STAGE-1 (1 references)
+target     prot opt source               destination         
+DOCKER-ISOLATION-STAGE-2  all  --  anywhere             anywhere            
+RETURN     all  --  anywhere             anywhere            
+
+Chain DOCKER-ISOLATION-STAGE-2 (1 references)
+target     prot opt source               destination         
+DROP       all  --  anywhere             anywhere            
+RETURN     all  --  anywhere             anywhere            
+
+Chain DOCKER-USER (1 references)
+target     prot opt source               destination         
+RETURN     all  --  anywhere             anywhere   
+```
+
+普通のEC2(インターネットアクセス可能)
+
+```shell
+[ec2-user@ip-10-2-20-44 ~]$ sudo iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination       
+```
