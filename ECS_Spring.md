@@ -725,7 +725,11 @@ jspではなく、Thymeleafとかいうのを使ってるらしい
 
 `tr th:each="user, status : ${users}"`
 のところ、
-${users}で取得したクラスの、userプロパティと、statusプロパティを使ってループする。
+${users}で取得したクラスのリスト（配列？）のuserクラスと、ループのステータスを使ってループする。スタータスは要素番号など色々とれる
+
+Thymeleaf th:eachについて
+
+<https://www.ne.jp/asahi/hishidama/home/tech/java/spring/boot/thymeleaf/th_each.html>
 
 あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
 いつつかう。
