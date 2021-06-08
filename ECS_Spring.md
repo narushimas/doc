@@ -630,3 +630,14 @@ server:
   servlet:
     context-path: /bff
 ```
+
+spring-bootのsrc直したら、docker image作り直すが、
+その際に前回のcacheを利用されてしまい、更新がされなかった。
+
+`--no-cache`オプションをつけて回避した。
+
+```shell
+docker build --no-cache bff/
+```
+
+しかし、遅い。なんか差分だけビルドしてくれるようなのないか。
