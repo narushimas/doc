@@ -658,5 +658,68 @@ user.htmlがいた
 
 bffのindex.html -> bffのController -> RestAPIでuser情報取得 -> 情報をusers.htmlに埋め込んでhtmlを返す流れっぽい
 
+Controllerの実装部分
+
+```java
+@Controller
+public class BackendForFrontendController {
+
+    @Autowired
+    RestOperations restOperations;
+
+    @RequestMapping(method = RequestMethod.GET, value = "users")
+    public String getUsers(Model model){
+        String service = "/backend/api/v1/users";
+        model.addAttribute("users",
+                restOperations.getForObject(service, User[].class));
+        return "users";
+    }
+
+}
+```
+
+restOperations.getForObjectで、REST APIのレスポンスを、Userクラスにバインドして、それをmodelに追加してるぽい。
+
+戻り値の"users"は、jspじゃなくて、users.htmlなんだけど、それにもmodelから自動バインドできるということか
+
+```html
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <title>Hello! Thymeleaf</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/flex.css" media="(min-width: 1280px)">
+    <link rel="stylesheet" href="static/css/flex_mobile.css" media="(min-width: 320px) and (max-width: 767px)">
+    <link rel="stylesheet" href="static/css/flex_tablet.css" media="(min-width: 768px) and (max-width: 1279px)">
+    <link rel="stylesheet" href="static/css/users.css" media="(min-width: 1280px)">
+    <link rel="stylesheet" href="static/css/users_mobile.css" media="(min-width: 320px) and (max-width: 767px)">
+    <link rel="stylesheet" href="static/css/users_tablet.css" media="(min-width: 768px) and (max-width: 1279px)">
+    <script type="text/javascript" src="webjars/jquery/jquery.js"></script>
+</head>
+<body>
+<h1>Hello! AWS ECS sample!</h1>
+<table>
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>User ID</th>
+        <th>User Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user, status : ${users}">
+        <td th:text="${status.count}"></td>
+        <td th:text="${user.userId}"></td>
+        <td th:text="${user.userName}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+```
+
 あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
 いつつかう。
