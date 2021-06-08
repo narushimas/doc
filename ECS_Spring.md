@@ -647,11 +647,14 @@ docker build --no-cache bff/
 とりあえずタスクを消したら、なんか自動でタスクが再作成された。
 その後、コンテナイメージも最新化されてたらしく、アクセス成功した。
 
-`http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html`
+<http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html>
 
 Call backend serviceボタンを押しても、次の画面にならないから、
 川畑さんのリポジトリ参照してるけど、どうやって記事のような表が帰ってくる？
 
+user.htmlがいた
+
+<https://github.com/debugroom/mynavi-sample-aws-ecs/blob/master/backend-for-frontend/src/main/resources/templates/users.html>
+
 あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
 いつつかう。
-
