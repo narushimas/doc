@@ -610,3 +610,23 @@ publicサブネットの設定
 
 有効化して、EC2を再起動したけどIP割り当てられない。
 EC2を作り直してみる。
+
+割り当てられた。
+
+しかしindex.htmlにアクセスしても、404。
+springbootの返す404っぽいので、APは起動していそう。
+
+ここで、index.html作ってないことと、context-pathの設定をしていないことを思い出し、川畑さんのリポジトリ見て、それぞれ追加した。
+
+context-pathは以下のように指定
+
+application.yml
+
+```yml
+service:
+  dns: http://internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
+
+server:
+  servlet:
+    context-path: /bff
+```
