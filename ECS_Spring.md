@@ -154,6 +154,9 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 
   よくわからなかったけど、ヘルスチェック用のhtmlの名前は、パブリック、プライベート両方とも`/backend-for-frontend/index.html`とした。アプリケーションコンテキストパスの下にこれをつけて、ヘルスチェックするらしい。（あとから振り返ると、BFFアプリケーションと同じ名前にすべきだったか？）
 
+  ALBのDNS名は、コンソールから、ALB、DNS Nameとして、調べられる
+  `ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com`
+
 ## 第6回 SpringBootアプリケーション作成
 
 <https://news.mynavi.jp/itsearch/article/devsoft/4363>
@@ -604,3 +607,6 @@ publicサブネットの設定
 `No`
 
 サブネット内で起動したインスタンスに自動でIP4アドレスを割り当てるもの。これをYesにしないとダメか。
+
+有効化して、EC2を再起動したけどIP割り当てられない。
+EC2を作り直してみる。
