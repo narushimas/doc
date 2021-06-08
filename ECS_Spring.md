@@ -656,5 +656,7 @@ user.htmlがいた
 
 <https://github.com/debugroom/mynavi-sample-aws-ecs/blob/master/backend-for-frontend/src/main/resources/templates/users.html>
 
+bffのindex.html -> bffのController -> RestAPIでuser情報取得 -> 情報をusers.htmlに埋め込んでhtmlを返す流れっぽい
+
 あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
 いつつかう。
