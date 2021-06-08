@@ -721,5 +721,11 @@ restOperations.getForObjectで、REST APIのレスポンスを、Userクラス�
 </html>
 ```
 
+jspではなく、Thymeleafとかいうのを使ってるらしい
+
+`tr th:each="user, status : ${users}"`
+のところ、
+${users}で取得したクラスの、userプロパティと、statusプロパティを使ってループする。
+
 あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
 いつつかう。
