@@ -24,8 +24,9 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   VPCをさらに複数のネットワークに分けた時の１つ
 
 * ルートテーブル
-  各サブネットに設定する。
-  ipアドレスを見て、どこに送信するかを判定する時に使うテーブル。
+  送信先のipアドレスをみて、どこに送信するか決めるもの。
+  事前に作成しておき、サブネットに紐づける。
+  今回もそうするが、複数のサブネットに1つのルートテーブルを紐づけることもできる。
 
   例 10.2.20.0/26というサブネットのルートテーブル例
 
@@ -34,7 +35,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
   | 10.2.20.0/26 | LOCAL | 自身のサブネット内なら当然LOCAL |
   | 0.0.0.0/0 | Internet Gateway | 上に当てはまらなかったもの全て、インターネットに。デフォルトゲートウェイという。 |
 
-  > ルートテーブルのターベットにInternet Gatewayがあれば、パブリックサブネットとよぶ。そうでなければプライベートサブネット。特にパブリックサブネットはデフォルトゲートウェイがInternet Gateway
+  > ルートテーブルのターゲットにInternet Gatewayがあれば、パブリックサブネットになる。そうでなければプライベートサブネット。
 
 * Internet Gateway
 
@@ -109,8 +110,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 
       サブネットのtag名は、作成時に指定できない？っぽいので、VPC作成後にサブネットから検索して、`ma-narushima-Public-subnet1`,  `ma-narushima-Private-subnet1`とした。
 
-      一度、サブネットのIPアドレスの分割を間違えた.
-      アベイラビリティゾーン用のIPアドレスが残っていないので、VPCを作り直そうと思った。しかしVPCは消せなかった。VPC内のNATゲートウェイを削除したら、消せるようになった。
+      一度、サブネットのIP分割方法を間違えたので、VPCを作り直そうと思ったが、VPCは消せなかった。VPC内のNATゲートウェイを削除したら、消せるようになった。
 
   5. 追加でサブネットを作成
 
@@ -130,7 +130,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 <https://news.mynavi.jp/itsearch/article/devsoft/4359>
 
 　ロードバランサはALB(Application Load Barancer)。ALBはパブリックサブネット用と、プライベートサブネット用に2つ用意する。
-（疑問）初歩的だけど、この絵について、プライベートにロードバランサ用意しているということは、パブリックはアベイラビリティゾーンA, プライベートはアベイラビリティゾーンBというような使い方をしたいため？
+（疑問）初歩的だけど、この絵について、プライベートにロードバランサ用意しているということは、パブリックはアベイラビリティゾーンA, プライベートはアベイラビリティゾーンBというような使い方もできるようにしたいため？
 
   Elastic Load Barancerは、Application, Network, Gatewayに分かれる。
 
@@ -146,10 +146,12 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 
   TG: ma-narushima-public-tg, ma-narushima-private-tg
 
+  ロードバランサにセキュリティグループを設定する。ロードバランサの送信先をまとめて、ターゲットグループという。
+
   プライベートサブネットのロードバランサのセキュリティグループのソース
   `10.2.20.0/24` (VPCのIPアドレス)
 
-  よくわからなかったけど、ヘルスチェック用のhtmlの名前は、パブリック、プライベート両方とも`/backend-for-frontend/index.html`とした。アプリケーションコンテキストパスの下にこれをつけて、ヘルスチェックするらしい。
+  よくわからなかったけど、ヘルスチェック用のhtmlの名前は、パブリック、プライベート両方とも`/backend-for-frontend/index.html`とした。アプリケーションコンテキストパスの下にこれをつけて、ヘルスチェックするらしい。（あとから振り返ると、BFFアプリケーションと同じ名前にすべきだったか？）
 
 ## 第6回 SpringBootアプリケーション作成
 
@@ -165,7 +167,7 @@ AWSは（多分）慣れるまでネットワークが難しい。単語を覚�
 SpringInitializerを使った。mavenプロジェクト。
 
 ただし、データベースアクセスとか、Modelクラスとかないので、SpringBootチュートリアルでしたような、Mybatis Frameworkや、lombok, spring webなどのチェックは付与しなかった。
-`間違い` Modelクラスあるし、Lombok使う前提で描かれてるので、lombokだけはチェックしておけばよかった。
+`間違い` Modelクラスあるし、Lombok使う前提で描かれてるので、lombokだけはチェック付けておけばよかった。
 
 ### GitHubへの登録
 
@@ -188,8 +190,8 @@ dependencyだけ追加すれば大丈夫だった。pluginはmavenのものだ�
 IntelliJからGit操作すると、addなしでcommitできる？
 diffもみやすい。
 
-Userクラスの記述がない？ようだけど、実装方法がわからない。
-Controllerでの使い方を見るに、Lombok BuilderというようなModelの実装方法のようだ。
+Userクラスの記述がないため、実装方法がわからない。
+Controllerでの使い方を見るに、Lombok BuilderというようなModelの実装方法らしい。
 
 backendプロジェクトには、あとからlombok追加
 
@@ -250,12 +252,12 @@ service:
   dns: http://internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
 ```
 
-将来的に、クラウドフォーメーションのスタックからDNSサーバのurlなどを取得できる。
+この記事でも将来的には、クラウドフォーメーションのスタックからDNSサーバのurlなどを取得する。
 
 CloudFormationのスタックには、作ってみるまで分からないサービスの色々な値が入る。
 DNSの論理名もALB作ってみるまで分からないけど、その情報のキーは定義しておけるから、実際に作ってみて設定された値を、キーを元に取りだす。
 
-記事にはないけど、ServicePropetiesクラスは、@Dataつけてgetterを自動生成しておかないとダメ。WebMvcConfigurerからgetDns()を呼び出すので。
+記事にはないけど、ServicePropertiesクラスは、@Dataつけてgetterを自動生成しておかないとダメ。WebMvcConfigurerからgetDns()を呼び出すので。
 
 ## 第7回 Dockerイメージ作成
 
@@ -326,16 +328,16 @@ docker pushに成功してできた
 
 ## 第8回 ECSクラスタの作成
 
-ECS(Elastic Container Service)クラスタは、dockerが動くEC2だと思おう。それに限らないらしいが、しばらくそれで頭に入れておいてよさそう。
+ECS(Elastic Container Service)クラスタは、dockerが動くEC2だと思う。それに限らないらしいが、しばらくそれで頭に入れておいてよさそう。
 
-ECSクラスタは、public, privateそれぞれについて、アベイラビリティゾーンの数だけ必要なので、4つ作るのだけど、時間がかかるので、今回はひとまずpublic, private1つずつで対応する。
+ECSクラスタは、public, privateそれぞれについて、アベイラビリティゾーンの数だけ必要なので、本記事の構成なら4つ作るのだけど、時間がかかるので、今回はひとまずpublic, private1つずつで対応する。
 
 クラスターテンプレートは、「EC2 Linux + ネットワーキング」で作成する。（多分裏でできるのは、EC2で、その上にdockerのインストールなどがされてる感じ？）
 
 クラスター名
 
-ma-narushima-cluster-private
-ma-narushima-cluster-public
+* `ma-narushima-cluster-private`
+* `ma-narushima-cluster-public`
 
 VPCは、自分が以前作ったものを選択
 
@@ -346,7 +348,7 @@ public -> ma-narushima-Public-subnet1
 
 * キーペアは、ma-narushimaとかいうやつ。サンプル系はこれで固定しよう。
 
-ECSも、実態はEC2なので、キーペアを発行していて、IPアドレスと合わせて、ログインできる。ログを確認するときなどに。
+ECSも、実態はEC2なので、キーペアを発行していて、IPアドレスと合わせて、ログインできる。ログを確認するときなどにログインする。
 
 * セキュリティグループの設定
 
@@ -365,7 +367,7 @@ SSHのソースは、publicのEC2からのアクセスしか許さないから�
 
 カスタムTCPルールには、ポートを32768-61000で指定して、ソースはipアドレスではなく、セキュリティグループで、ALB（多分private）で指定しているセキュリティグループを指定する。`sg-0ef8eeb7dfc2056cb`
 
-javaアプリが使うポートは32768-61000の中のどれかにはなるってことだろう。publicのbffから、privateのALBを介してprivateのECSに到達したいので、このALBはprivateで良いはずだ。そしてECSにアプリからアクセスするのは、privateのALBを介する時だけということだろう。
+javaアプリが使うポートは32768-61000の中のどれかにはなるってことだろう。publicのbffから、privateのALBを介してprivateのECSに到達したいので、このALBはprivateで良いはず。ECSにアプリからアクセスするのは、privateのALBを介する時だけということだろう。
 
 * public
 
@@ -375,7 +377,7 @@ privateとほとんど同じ。ただし、カスタムTCPルールのソース�
 
 ECSタスクとは
 
-Dockerコンテナの設定（マッピングするポート番号や、割り当てるCPUやメモリ）を指定すること。docker-composeファイルに近いな？
+Dockerコンテナの設定（マッピングするポート番号や、割り当てるCPUやメモリ）を指定すること。docker-composeファイルに近い？
 
 * ECSコンテナに割り当てるタスク実行用のIAMロール作成
   
@@ -457,7 +459,7 @@ ma-narushima-cluster-public
 クラスター起動タイプに、EC2を選ぶ。
 
 クラスターを作成し終えたら、パブリックサブネットのALBのDNSに以下のBFFアプリケーションのパスを加えるというのだが、これはどうやる？
-ややこしい。ALBにDNS用の名前を与えるだけ。。
+ややこしい。ALBにDNS用の名前を与えるだけ。
 
 パブリックのALBには、最初から以下の名前が指定されているが。。？
 ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com
