@@ -798,7 +798,8 @@ docker image rmで出来上がったimage削除してもそれなりに空いた
 
 
 call backend しても404なので、users.htmlがないからかと思ったが、追加しても404。
-MvcConfigに以下設定(addResourceHandlersの追加)が必要だった。
+MvcConfigに以下設定(addResourceHandlersの追加)が必要?
+
 
 ```java
 @ComponentScan("app.web")
@@ -818,3 +819,32 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 }
 ```
+
+追加してもまだ404だけど。@Configurationつけてなかった。
+@ComponentScan("app.web")の下に、
+@Configurationつけたらコントローラーが動くようにはなった。
+
+### ECS上のAP変更手順
+
+docker hubのイメージを変更し、タスクを再実行すれば変更される。
+
+* bffというJavaプロジェクトを最新化する場合
+
+1. githubを最新化
+2. docker imageを最新化(DockerFileの中でgithubのソースをcloneする処理が書かれている前提)
+
+  ```shell
+  docker build --no-cache bff/ -t narushimas/bff:latest
+  ```
+
+  ```shell
+  docker login
+  ```
+
+  ```shell
+  docker push narushimas/bff:latest
+  ```
+
+3. AWSコンソールでECSタスクをstopする（ECSサービスが作成済で、それによりbffがタスクとして動く状態が前提）
+   勝手にタスクが再実行されて、最新化される
+   > タスクのupdateでは更新されないので注意
