@@ -733,3 +733,20 @@ Thymeleaf th:eachについて
 
 あと、川畑さんのbackencのapplication.ymlにdnsプロパティあったけど、必要？
 いつつかう。
+
+* privateサブネットのbackendAPの挙動を確かめるために、Talend API TesterでALBのDNS名にアクセスしたけど、Abortedだった。どうやらALBに割り当てられるDNS名は、名前解決するとプライベートipアドレスになるらしい。
+<https://dev.classmethod.jp/articles/internal-alb-https/>
+
+privateサブネットにアクセスできるpublicサブネットから、nslookupでALBのDNS名を解決すると
+
+```shell
+[ec2-user@ip-10-2-20-44 ~]$ nslookup internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
+Server:         10.2.20.2
+Address:        10.2.20.2#53
+
+Non-authoritative answer:
+Name:   internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
+Address: 10.2.20.120
+Name:   internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
+Address: 10.2.20.221
+```
