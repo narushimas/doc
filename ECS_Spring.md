@@ -750,3 +750,15 @@ Address: 10.2.20.120
 Name:   internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com
 Address: 10.2.20.221
 ```
+
+同じように、publicサブネットのEC2から、curlしたら正しく返ってきたので、backendAPは正しく動いている
+
+ALBのDNS名（名前解決されてprivateIPアドレスになる） + backendAPで用意しているURL
+
+```shell
+curl internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.com/backend/api/v1/users
+```
+
+```shell
+[{"userId":"1","userName":"Taro"},{"userId":"2","userName":"Jiro"}] 
+```
