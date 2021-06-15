@@ -644,8 +644,10 @@ docker build --no-cache bff/
 
 そしてdocker-hubのコンテナイメージを更新した場合、ECSの実行するコンテナイメージを最新化するには何をすればいい
 
-とりあえずタスクを消したら、なんか自動でタスクが再作成された。
+とりあえずタスクを消したら(stopしたら)、なんか自動でタスクが再作成された。
 その後、コンテナイメージも最新化されてたらしく、アクセス成功した。
+
+clusterのupdateは違う？
 
 <http://ma-narushima-public-alb-1213230744.ap-northeast-1.elb.amazonaws.com/bff/index.html>
 
@@ -761,4 +763,33 @@ curl internal-ma-narushima-private-alb-411929720.ap-northeast-1.elb.amazonaws.co
 
 ```shell
 [{"userId":"1","userName":"Taro"},{"userId":"2","userName":"Jiro"}] 
+```
+
+javaプロジェクトのソースを変更して、再度docker buildしようとしたら
+
+```shell
+[ec2-user@ip-172-31-37-43 ~]$ docker build --no-cache bff/ -t narushimas/bff:latest
+Sending build context to Docker daemon  326.1kB
+Error response from daemon: Error processing tar file(exit status 1): write /src/main/java/config/WebApp.java: no space left on device
+```
+
+というエラーがでた。ホストマシンのディスク容量不足らしい。
+EC2のディスク容量を増やしてみることにした。
+
+AWSのコンソールから見ると、8GiBになっていた。
+
+```
+Device name : /dev/xvda
+Volume size(GiB) : 8
+```
+
+EC2のインスタンスのStrageタグから、
+ActionsからModify Volumeを選び、16GiBに変更してみた。
+
+100％使用されていた/dev/xvda1の容量が16GiBになって空いた。
+
+df  （該当箇所抜粋）
+
+``shell
+/dev/xvda1      16764908 8386856   8378052  51% /
 ```
