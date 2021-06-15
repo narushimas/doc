@@ -793,3 +793,28 @@ df  （該当箇所抜粋）
 ``shell
 /dev/xvda1      16764908 8386856   8378052  51% /
 ```
+
+docker image rmで出来上がったimage削除してもそれなりに空いた。そっちでもよかったかも
+
+
+call backend しても404なので、users.htmlがないからかと思ったが、追加しても404。
+MvcConfigに以下設定(addResourceHandlersの追加)が必要だった。
+
+```java
+@ComponentScan("app.web")
+public class MvcConfig implements WebMvcConfigurer {
+    @Autowired
+    ServiceProperties properties;
+
+    @Bean
+    public RestOperations restOperations(RestTemplateBuilder restTemplateBuilder){
+        return restTemplateBuilder.rootUri(properties.getDns()).build();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+    }
+}
+```
