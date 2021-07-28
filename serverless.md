@@ -39,7 +39,7 @@
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
+        <version>3.2.4</version>
         <configuration>
             <createDependencyReducedPom>false</createDependencyReducedPom>
         </configuration>
@@ -57,6 +57,10 @@
 4. handleRequestメソッドを実装しクラスを作る
 
     ```java
+    package com.example.lambdasample;
+
+    import com.amazonaws.services.lambda.runtime.Context;
+
     public class LambdaMethodHandler{
         public String handleRequest(String input, Context context){
             context.getLogger().log("Input: " + input);
@@ -70,3 +74,6 @@
     ```shell
     mvn clean package shade:shade
     ```
+
+    出来上がるのは普通のjarとprefixにoriginalとついたjarがある。
+    shadeによって作られるのはoriginalの方なので、lambdaにはoriginalのついた方をuploadする
