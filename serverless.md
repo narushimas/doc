@@ -3,19 +3,34 @@
 参考記事
 <https://news.mynavi.jp/itsearch/article/devsoft/4316>
 
-## lambdaに載せるjarの作り方
+## 基礎知識
 
-### jarに依存jar全てを含める
-
-    maven-shade-pluginを利用する
-
-## handleRequestメソッド（AWS Lambdaのエントリーポイント）
-
-## Apprication.getBeanを使う（@Injectじゃない）
+* lambdaには、jarを載せる
+* jarにはmaven-shade-pluginを利用して依存jar全てをまとめる
+* jar内のclassのhandleRequestメソッドが動く（AWS Lambdaのエントリーポイントになる）
 
 ## AWS lambdaで動くアプリを作る
 
+Plain Javaで作る場合と、SpringBootを使って作る場合で異なる。
+シンプルな実装ならPlain Javaの方が、楽に作れるし、起動も早い。
+
+### Plain Javaで作る場合
+
 参考<https://www.baeldung.com/java-aws-lambda>
+
+`基礎知識`
+
+* AWS lambdaのコンソールから、エントリポイントを指定する
+
+    **クラスのフルパス::handleRequest**　とする（メソッド参照の書き方）
+
+### SpringBootを使う場合
+
+`基礎知識`
+
+* @Injectではなく、X.getBean()でcomponent scanされたクラスを利用する
+
+`手順`
 
 1. spring initializerでプロジェクトを作る
 
