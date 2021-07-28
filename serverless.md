@@ -76,4 +76,8 @@
     ```
 
     出来上がるのは普通のjarとprefixにoriginalとついたjarがある。
-    shadeによって作られるのはoriginalの方なので、lambdaにはoriginalのついた方をuploadする
+    全ての依存関係を含んだのは普通のjar(originalがつかない方)
+
+    理由
+        最初に普通にjarを作った後、shadeがその名前のprefixにoriginalとつけて、
+        新規に依存jar全てを含んだjarを作るため。
