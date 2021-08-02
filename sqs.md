@@ -12,6 +12,11 @@ FIFOキュー: 順番と出る回数が担保されている。
 
 <https://docs.aws.amazon.com/ja_jp/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html>
 
+## 可視性タイムアウト
+
+    あるコンシューマがメッセージをポーリングして処理している時に、他のコンシューマが触れない状態。いわばロック状態。
+    処理が成功したらコンシューマによってメッセージが削除され、処理が失敗したら再度触れる状態に戻る。
+
 ## デッドレターキュー
 
 公式の説明
