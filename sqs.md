@@ -68,3 +68,8 @@ FIFOキュー: 順番と出る回数が担保されている。
 
 クラソル
 <https://business.ntt-east.co.jp/content/cloudsolution/column-135.html>
+
+## 単語
+
+スロットリング
+    一定時間内に受信可能なリクエスト数を制限し、制限を上回るリクエストがなされた際には受信を拒否しエラーコードを返却すること。
