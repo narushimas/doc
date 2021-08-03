@@ -106,3 +106,8 @@ lambdaから受け取れる情報<https://docs.aws.amazon.com/ja_jp/lambda/lates
 タイムアウトの場合、3回実行された。それが全部失敗したら、dlqに入った。
 
 システム例外の場合、3回実行された。それが全部失敗したら、dlqに入った。
+
+lambdaの自動リトライも2回（実行回数は合計3回）で、sqsのMaximum receivesも3回なので確かに3回取得・実行されて、ダメならdlqとわかる。
+
+そこで実験的にMaximum receivesを500にしたら再実行3回ののち、dlqに格納されなくなった。
+しかし、sqsにも残っていない。なぜ？
