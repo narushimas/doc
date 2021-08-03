@@ -100,3 +100,9 @@ Plain Javaで作る場合と、SpringBootを使って作る場合で異なる。
 ## 例外ハンドリング
 
 lambdaから受け取れる情報<https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/java-exceptions.html>
+
+### 再実行
+
+タイムアウトの場合、3回実行された。それが全部失敗したら、dlqに入った。
+
+システム例外の場合、3回実行された。それが全部失敗したら、dlqに入った。
