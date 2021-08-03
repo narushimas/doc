@@ -82,4 +82,7 @@ FIFOキュー: 順番と出る回数が担保されている。
 ## どうすべきか迷うこと
 
 dlqに格納されたメッセージ、なぜsqsにある時に処理できなかったのか理由がわからない。
-cloud watchから取得するの？
+sqsに最初に格納されたbodyしかないものになっていて、エラー情報が含まれていない。
+
+CloudWatch Logsを使用して失敗原因を追跡できる？
+<https://docs.aws.amazon.com/ja_jp/sns/latest/dg/sns-dead-letter-queues.html>
