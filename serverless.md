@@ -96,3 +96,7 @@ Plain Javaで作る場合と、SpringBootを使って作る場合で異なる。
     理由
         最初に普通にjarを作った後、shadeがその名前のprefixにoriginalとつけて、
         新規に依存jar全てを含んだjarを作るため。
+
+## 例外ハンドリング
+
+lambdaから受け取れる情報<https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/java-exceptions.html>
