@@ -78,8 +78,13 @@ FIFOキュー: 順番と出る回数が担保されている。
 
 Destinationsは、SQS, SNS, Lambda, EventBridgeに連携可能
 
-Destinationsの場合のリトライ方法の整理が必要
+**TODO**
 
+1. Destinationsの場合のリトライ方法の整理が必要
+
+2. Destinationsを使う時、lambdaの成功、失敗時のsqsからデータが消えるかいなか。失敗時、destinationsに連携しつつsqsにメッセージが残ってしまうのでは。などを調べてまとめる。
+
+3. Destinationsを使うとき、lambda以外の選択肢を利用する方法
 
 以下、連携処理機能の組み合わせ
 （連携先はひとまず全部lambdaにした）
