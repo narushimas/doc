@@ -60,6 +60,7 @@ FIFOキュー: 順番と出る回数が担保されている。
 
     lambdaの宛先指定機能を使えばもうデッドレターキューはいらない？
     lambdaには処理成功時と、処理失敗時の連携先を指定できる。さらに含められる情報がデッドレターキューよりも多い。
+    https://dev.classmethod.jp/articles/lambda-dlq-vs-destinations/
 
 ## コンシューマーの種類
 
