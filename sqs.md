@@ -8,6 +8,11 @@
 
 FIFOキュー: 順番と出る回数が担保されている。
 
+#### キューの使い分け
+
+バッチ処理の順番を確実に指定したい場合、FIFO
+バッチ処理の順番を
+
 ## ロングポーリングとショートポーリングの違い
 
 <https://docs.aws.amazon.com/ja_jp/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html>
@@ -60,7 +65,19 @@ FIFOキュー: 順番と出る回数が担保されている。
 
     lambdaの宛先指定機能を使えばもうデッドレターキューはいらない？
     lambdaには処理成功時と、処理失敗時の連携先を指定できる。さらに含められる情報がデッドレターキューよりも多い。
-    https://dev.classmethod.jp/articles/lambda-dlq-vs-destinations/
+    <https://dev.classmethod.jp/articles/lambda-dlq-vs-destinations/>
+
+    DLQとDestinationsのメリデメ
+    
+| | DLQ | Destinations | 
+| --- | --- | --- |
+| 情報量 | △ | ○ |
+| リトライのしやすさ | ○ | ○ | 
+| 連携対象の自由度 | ○ | ○ | 
+| 実装量 | ○ | ○ |
+
+Destinationsは、SQS, SNS, Lambda, EventBridgeに連携可能
+
 
 ## コンシューマーの種類
 
@@ -68,6 +85,7 @@ FIFOキュー: 順番と出る回数が担保されている。
     fargate
     EC2
 
+    など自由に選べる
     それぞれの実装方法の違い
 
 ## 参考

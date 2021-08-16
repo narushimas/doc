@@ -1,0 +1,27 @@
+macから打つとき、以下オプションつけないとうまく動かない
+
+```
+--cli-binary-format raw-in-base64-out
+```
+
+
+ダメな例
+
+```
+~ $ aws lambda invoke --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "Success": false }' response.json 
+
+An error occurred (InvalidRequestContentException) when calling the Invoke operation: Could not parse request body into json: Could not parse payload into json: Invalid UTF-8 middle byte 0x1c
+ at [Source: (byte[])"J�z�j["; line: 1, column: 4]
+```
+
+良い例
+
+```
+~ $ aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "Success": false }' response.json
+{
+    "StatusCode": 202
+}
+```
+
+参考
+https://stackoverflow.com/questions/64137185/aws-cli-lambda-could-not-parse-request-body-into-json
