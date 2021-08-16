@@ -72,12 +72,36 @@ FIFOキュー: 順番と出る回数が担保されている。
 | | DLQ | Destinations | 
 | --- | --- | --- |
 | 情報量 | △ | ○ |
-| リトライのしやすさ | ○ | ○ | 
+| リトライのしやすさ | ○ | × | 
 | 連携対象の自由度 | ○ | ○ | 
 | 実装量 | ○ | ○ |
 
 Destinationsは、SQS, SNS, Lambda, EventBridgeに連携可能
 
+Destinationsの場合のリトライ方法の整理が必要
+
+
+以下、連携処理機能の組み合わせ
+（連携先はひとまず全部lambdaにした）
+
+1. ma-narushima-lambda-destination
+2. ma-narushima-destination-onfailure-receiver
+3. ma-narushima-destination-onsuccess-receiver
+
+参考
+<https://qiita.com/kojiisd/items/efcb2ac3d5cc176534ba>
+
+lambda-destinationを成功にする非同期リクエスト
+
+```
+aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "Success": true }' response.json
+```
+
+lambda-desitinationを失敗にする非同期リクエスト
+
+```
+aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "Success": true }' response.json
+```
 
 ## コンシューマーの種類
 
