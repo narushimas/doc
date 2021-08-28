@@ -135,6 +135,7 @@ sqsに最初に格納されたbodyしかないものになっていて、エラ�
 CloudWatch Logsを使用して失敗原因を追跡できる？
 <https://docs.aws.amazon.com/ja_jp/sns/latest/dg/sns-dead-letter-queues.html>
 
+<<<<<<< HEAD
 
 ## SQSとLambdaの連携
 
@@ -142,3 +143,7 @@ Lambdaからポーリングするのと、LambdaのトリガにSQSを指定し�
 
 LambdaのトリガにSQSを指定するのは実はロングポーリング
 https://bluepixel.hatenablog.com/entry/2020/05/06/070732
+=======
+lambdaとsqsのトリガ
+https://d1.awsstatic.com/serverless-jp/20181022-LambdaxSQS.pdf
+>>>>>>> 3af9480 (update)
