@@ -125,7 +125,7 @@ Pythonだったらboto3を使えばいい
 import boto3
 
 def lambda_handler(event, context):
-    res = boto3.client('lambda').invoke(
+    response = boto3.client('lambda').invoke(
         FunctionName='実行したいlambdaの名称',
         InvocationType='RequestResponse',
         Payload=Payload
@@ -139,10 +139,26 @@ def lambda_handler(event, context):
 非同期: Event
 同期: RequestRestponse
 
-`Payload`で後続処理のeventに含める情報を記述できる
+動作確認: DryRun
+
+`Payload`で後続処理に伝えるeventに含める情報を記述できる
 
 ```py
 
+```
+
+## Roleの設定
+
+Lambdaから別のLambdaをinvokeするには、`InvokeFunction`が必要
+
+```json
+{
+    "Effect": "Allow",
+    "Action": [
+        "lambda:InvokeFunction"
+    ],
+    "Resource": "*"
+}
 ```
 
 Lambdaの共通のコードを管理する方法としてLambdaレイヤーというのがあるらしい。これ上手く使える？
