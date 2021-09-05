@@ -101,6 +101,12 @@ Plain Javaで作る場合と、SpringBootを使って作る場合で異なる。
 
 lambdaから受け取れる情報<https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/java-exceptions.html>
 
+Lambdaの関数内部から別サービスを呼び出すことができる？
+もしできるなら例外をcatchしたらそれに対応したLambdaなどを呼べばいい
+
+Lambdaの共通のコードを管理する方法としてLambdaレイヤーというのがあるらしい。これ上手く使える？
+<https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/configuration-layers.html>
+
 ### 再実行
 
 タイムアウトの場合、3回実行された。それが全部失敗したら、dlqに入った。
