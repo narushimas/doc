@@ -144,7 +144,7 @@ def lambda_handler(event, context):
 `Payload`で後続処理に伝えるeventに含める情報を記述できる
 
 ```py
-
+Payload = '{\"message\":' + '業務例外が発生しました。氏名が記入されていません。' + '}'
 ```
 
 ## Roleの設定
@@ -160,6 +160,73 @@ Lambdaから別のLambdaをinvokeするには、`InvokeFunction`が必要
     "Resource": "*"
 }
 ```
+
+コンソールからポリシー付与する場合
+<https://took.jp/post-1037/>
+
+
+## 実装サンプル
+
+実際に呼び出したファンクションと、呼び出されたファンクション
+
+呼び出し側
+
+```py
+import boto3
+
+def lambda_handler(event, context):
+    response = boto3.client('lambda').invoke(
+        FunctionName = 'ma-narushima-invoked-function',
+        InvocationType = 'RequestResponse',
+        Payload = '{\"message\":' + '\"BusinessException\"' + '}'
+    )
+    output = response['Payload'].read().decode('utf-8')　# 呼び出し先からのresponseを受け取る
+    print(output)
+```
+
+呼び出され側
+
+```py
+def lambda_handler(event, context):
+    if 'message' in event:
+        print(event['message']) # 受け取った情報をログに出力
+        return 'message {' + event['message'] + '} was received.'
+    else:
+        return "message not exists."    
+
+```
+
+ログ
+
+呼び出し側のログ
+
+```txt
+Test Event Name
+test
+
+Response
+null
+
+Function Logs
+START RequestId: a0fa349f-5e4b-4c0d-9687-a28fe9091f9a Version: $LATEST
+"message {BusinessException} was received."
+END RequestId: a0fa349f-5e4b-4c0d-9687-a28fe9091f9a
+REPORT RequestId: a0fa349f-5e4b-4c0d-9687-a28fe9091f9a	Duration: 390.24 ms	Billed Duration: 391 ms	Memory Size: 128 MB	Max Memory Used: 78 MB
+
+Request ID
+a0fa349f-5e4b-4c0d-9687-a28fe9091f9a
+```
+
+呼び出され側のログ
+
+```txt
+START RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45 Version: $LATEST
+BusinessException
+END RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45
+REPORT RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45	Duration: 1.05 ms	Billed Duration: 2 ms	Memory Size: 128 MB	Max Memory Used: 51 MB	Init Duration: 127.19 ms	
+```
+
+しっかり埋め込んだBusinessExceptionが取得できている
 
 Lambdaの共通のコードを管理する方法としてLambdaレイヤーというのがあるらしい。これ上手く使える？
 <https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/configuration-layers.html>
