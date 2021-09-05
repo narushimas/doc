@@ -111,7 +111,39 @@ invokeするのと、stepfuncitonsを比較する？
 あとinvokeも同期処理する方法と、非同期処理する方法があって、多分Lambdaは実行時間を減らしたいから非同期がいいんだろうけど、そしたら非同期処理の更なる例外はどうするのか。（それは全部システム例外として良いか）
 非同期の場合、呼び出して202が返ってくるかな？
 
-参考<https://qiita.com/ume1126/items/8170a10fad6b21f0f54a#--%E5%90%8C%E6%9C%9F%E5%87%A6%E7%90%86-requestresponse>
+参考
+
+公式
+<https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/API_Invoke.html>
+
+わかりやすく整理した記事（Python）
+<https://qiita.com/ume1126/items/8170a10fad6b21f0f54a#--%E5%90%8C%E6%9C%9F%E5%87%A6%E7%90%86-requestresponse>
+
+Pythonだったらboto3を使えばいい
+
+```py
+import boto3
+
+def lambda_handler(event, context):
+    res = boto3.client('lambda').invoke(
+        FunctionName='実行したいlambdaの名称',
+        InvocationType='RequestResponse',
+        Payload=Payload
+    )
+
+```
+
+`FunctionName`で実行したlambdaの名称を指定する
+
+`invocationTypeで同期と非同期を変更できる`
+非同期: Event
+同期: RequestRestponse
+
+`Payload`で後続処理のeventに含める情報を記述できる
+
+```py
+
+```
 
 Lambdaの共通のコードを管理する方法としてLambdaレイヤーというのがあるらしい。これ上手く使える？
 <https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/configuration-layers.html>
