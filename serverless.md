@@ -104,6 +104,15 @@ lambdaから受け取れる情報<https://docs.aws.amazon.com/ja_jp/lambda/lates
 Lambdaの関数内部から別サービスを呼び出すことができる？
 もしできるなら例外をcatchしたらそれに対応したLambdaなどを呼べばいい
 
+lambdaの言語別のsdkでinvokeをすればいい。
+invokeするのと、stepfuncitonsを比較する？
+（invokeと違ってコードから例外処理を排除できるとか？）
+
+あとinvokeも同期処理する方法と、非同期処理する方法があって、多分Lambdaは実行時間を減らしたいから非同期がいいんだろうけど、そしたら非同期処理の更なる例外はどうするのか。（それは全部システム例外として良いか）
+非同期の場合、呼び出して202が返ってくるかな？
+
+参考<https://qiita.com/ume1126/items/8170a10fad6b21f0f54a#--%E5%90%8C%E6%9C%9F%E5%87%A6%E7%90%86-requestresponse>
+
 Lambdaの共通のコードを管理する方法としてLambdaレイヤーというのがあるらしい。これ上手く使える？
 <https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/configuration-layers.html>
 
