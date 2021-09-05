@@ -296,20 +296,26 @@ Response
 null
 
 Function Logs
-START RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0 Version: $LATEST
-"Handled by { MyError }."
-END RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0
-REPORT RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0	Duration: 1156.94 ms	Billed Duration: 1157 ms	Memory Size: 128 MB	Max Memory Used: 77 MB	Init Duration: 276.19 ms
+START RequestId: 135cd4d3-0951-4845-8b89-33a1185dcead Version: $LATEST
+"Handled by MyError and send message ['User input was insufficient'] to client."
+END RequestId: 135cd4d3-0951-4845-8b89-33a1185dcead
+REPORT RequestId: 135cd4d3-0951-4845-8b89-33a1185dcead	Duration: 1019.76 ms	Billed Duration: 1020 ms	Memory Size: 128 MB	Max Memory Used: 77 MB	Init Duration: 230.97 ms
 
 Request ID
-0f2ca7ea-c22b-49d5-a9f4-db62c02126a0
+135cd4d3-0951-4845-8b89-33a1185dcead
 ```
 
 呼び出され側のログ
 
 自作エラー発生時に呼び出された場合
 ```txt
+2021-09-06T02:22:57.100+09:00	START RequestId: 9bb3166c-c436-4548-a881-92a86382ffce Version: $LATEST
 
+2021-09-06T02:22:57.104+09:00	{'error_name': 'MyError', 'error_message': ['User input was insufficient']}
+
+2021-09-06T02:22:57.104+09:00	END RequestId: 9bb3166c-c436-4548-a881-92a86382ffce
+
+2021-09-06T02:22:57.104+09:00	REPORT RequestId: 9bb3166c-c436-4548-a881-92a86382ffce Duration: 0.89 ms Billed Duration: 1 ms Memory Size: 128 MB Max Memory Used: 52 MB
 ```
 
 しっかり埋め込んだBusinessExceptionが取得できている
