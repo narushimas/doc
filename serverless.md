@@ -242,7 +242,7 @@ import boto3
 
 # 例外ハンドラーを呼びだす関数
 def call_exception_handler(e):
-    d = {'error_name':e.__class__.__name__, 'message':e.args}
+    d = {'error_name':e.__class__.__name__, 'error_message':e.args}
     return boto3.client('lambda').invoke(
         FunctionName = 'ma-narushima-invoked-function',
         InvocationType = 'RequestResponse',
@@ -258,14 +258,14 @@ class MyError(Exception):
     pass
 
 # 自作例外を発生させる関数
-def raiseMyError(message):
-    raise MyError(message)
+def raiseMyError(error_message):
+    raise MyError(error_message)
 
 def lambda_handler(event, context):
     response = ""
     try:
         # raiseZeroDivisionError()
-        raiseMyError('ユーザの入力が不足しています') # 例外発生時にユーザに通知したいメッセージを格納する
+        raiseMyError('User input was insufficient') # 例外発生時にユーザに通知したいメッセージを格納する
     except ZeroDivisionError as e: 
         response = call_exception_handler(e)
     except MyError as e:
@@ -273,6 +273,17 @@ def lambda_handler(event, context):
         
     output = response['Payload'].read().decode('utf-8')
     print(output)
+
+```
+
+# 呼び出され側の実装
+
+```py
+def lambda_handler(event, context):
+    print(event) # エラー情報を含むeventをログに出力
+    error_name = event['error_name']
+    error_message = event['error_message']
+    return f'Handled by {error_name} and send message {error_message} to client.'
 ```
 
 呼び出し側のログ
@@ -293,7 +304,6 @@ REPORT RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0	Duration: 1156.94 ms	Bill
 Request ID
 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0
 ```
-
 
 呼び出され側のログ
 
