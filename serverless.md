@@ -226,6 +226,82 @@ END RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45
 REPORT RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45	Duration: 1.05 ms	Billed Duration: 2 ms	Memory Size: 128 MB	Max Memory Used: 51 MB	Init Duration: 127.19 ms	
 ```
 
+## さらにちゃんと例外ハンドリングする実装例
+
+呼び出し側の実装
+
+業務例外が発生したら、クライアントがすべき正しい操作をmessageとして例外に埋め込む。
+それをクライアント通知処理をするための後続処理に連携する（ここではlambdaを噛ませているが、直接snsを使ってもいい）
+
+TODO: クライアントの情報をどうやって得る？
+SQSにはユーザIDを入れ、それをキーにデータベースからメールアドレスを取り出す？
+
+```py
+import json
+import boto3
+
+# 例外ハンドラーを呼びだす関数
+def call_exception_handler(e):
+    d = {'error_name':e.__class__.__name__, 'message':e.args}
+    return boto3.client('lambda').invoke(
+        FunctionName = 'ma-narushima-invoked-function',
+        InvocationType = 'RequestResponse',
+        Payload = json.dumps(d)
+    )
+
+# ZeroDivisionErrorを起こす関数
+def raiseZeroDivisionError():
+    1 / 0
+    
+# 自作例外クラス 
+class MyError(Exception):
+    pass
+
+# 自作例外を発生させる関数
+def raiseMyError(message):
+    raise MyError(message)
+
+def lambda_handler(event, context):
+    response = ""
+    try:
+        # raiseZeroDivisionError()
+        raiseMyError('ユーザの入力が不足しています') # 例外発生時にユーザに通知したいメッセージを格納する
+    except ZeroDivisionError as e: 
+        response = call_exception_handler(e)
+    except MyError as e:
+        response = call_exception_handler(e)
+        
+    output = response['Payload'].read().decode('utf-8')
+    print(output)
+```
+
+呼び出し側のログ
+
+```txt
+Test Event Name
+test
+
+Response
+null
+
+Function Logs
+START RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0 Version: $LATEST
+"Handled by { MyError }."
+END RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0
+REPORT RequestId: 0f2ca7ea-c22b-49d5-a9f4-db62c02126a0	Duration: 1156.94 ms	Billed Duration: 1157 ms	Memory Size: 128 MB	Max Memory Used: 77 MB	Init Duration: 276.19 ms
+
+Request ID
+0f2ca7ea-c22b-49d5-a9f4-db62c02126a0
+```
+
+
+呼び出され側のログ
+
+自作エラー発生時に呼び出された場合
+```txt
+
+```
+
 しっかり埋め込んだBusinessExceptionが取得できている
 
 Lambdaの共通のコードを管理する方法としてLambdaレイヤーというのがあるらしい。これ上手く使える？
