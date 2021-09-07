@@ -53,3 +53,6 @@ Choiceを利用することでJSONのあるパラメータの値に応じて分�
 stepfuncitonsのパラメタについて分かりやすい記事
 <https://dev.classmethod.jp/articles/step-functions-parameters/>
 
+要は...
+stepfuncionsはJSON情報を持ちまわって処理をこなすもの。
+
