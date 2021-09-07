@@ -20,3 +20,23 @@ Lambda/DynamoDB/SNS/SQSなどを連携できる
 * SDKを使用する
 
 * タスク内でネストして実行する
+
+##　情報をサーバレスに伝える
+
+dataを持ちまわることができる。
+
+```txt
+入力データ
+{
+    "name" : "narushima",
+    "num" : "3"
+}
+
+後続タスクに渡す方法
+{
+    "Type": "Task",
+    "InputPath": "$num",
+    "Resource" ": "arn:aws:lambda~~~~" # lambdaを指定する
+}
+```
+
