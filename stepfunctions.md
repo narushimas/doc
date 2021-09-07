@@ -49,3 +49,7 @@ https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/input-output-resultpa
 Choiceを利用することでJSONのあるパラメータの値に応じて分岐先を決定できる。
 これを利用して業務例外のハンドリングができるのでは。
 <https://dev.classmethod.jp/articles/aws-step-functions-states-choice/>
+
+stepfuncitonsのパラメタについて分かりやすい記事
+<https://dev.classmethod.jp/articles/step-functions-parameters/>
+
