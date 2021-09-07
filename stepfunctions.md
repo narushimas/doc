@@ -40,3 +40,4 @@ dataを持ちまわることができる。
 }
 ```
 
+step functionsにおけるlabmda error
