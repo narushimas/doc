@@ -35,7 +35,7 @@ dataを持ちまわることができる。
 後続タスクに渡す方法
 {
     "Type": "Task",
-    "InputPath": "$num",
+    "InputPath": "$num", # 入力データのnumを後続タスクに渡す
     "Resource" ": "arn:aws:lambda~~~~" # lambdaを指定する
 }
 ```
