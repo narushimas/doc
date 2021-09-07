@@ -41,3 +41,4 @@ dataを持ちまわることができる。
 ```
 
 step functionsにおけるlabmda error
+<https://docs.aws.amazon.com/ja_jp/step-functions/latest/dg/bp-lambda-serviceexception.html>
