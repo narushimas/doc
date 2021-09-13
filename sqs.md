@@ -99,13 +99,13 @@ Destinationsは、SQS, SNS, Lambda, EventBridgeに連携可能
 lambda-destinationを成功にする非同期リクエスト
 
 ```
-aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "Success": true }' response.json
+aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "status": "success" }' response.json
 ```
 
 lambda-desitinationを失敗にする非同期リクエスト
 
 ```
-aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "Success": true }' response.json
+aws lambda invoke --cli-binary-format raw-in-base64-out  --function-name ma-narushima-lambda-destination --invocation-type Event --payload '{ "status": "failure" }' response.json
 ```
 
 ## コンシューマーの種類

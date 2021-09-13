@@ -219,7 +219,7 @@ a0fa349f-5e4b-4c0d-9687-a28fe9091f9a
 
 呼び出され側のログ
 
-```txt
+```txtk
 START RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45 Version: $LATEST
 BusinessException
 END RequestId: b7e37b1f-8b43-4e27-8efd-84bf35466a45
