@@ -4,7 +4,7 @@ SpringBootとか、IntelliJとか、AWSとか勉強
 
 <details>
 <summary>
-Slack告知メッセージテンプレート
+detailsのテスト
 </summary>
 
 ```
